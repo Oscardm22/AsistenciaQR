@@ -8,6 +8,8 @@
         <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorAccent">@color/teal_200</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
 
         <!-- Status bar -->
         <item name="android:statusBarColor">@color/purple_700</item>
@@ -24,23 +26,56 @@
     <style name="Widget.AsistenciaQR.Button.Filled" parent="Widget.MaterialComponents.Button">
         <item name="android:textAllCaps">false</item>
         <item name="android:minHeight">48dp</item>
-        <item name="cornerRadius">16dp</item>
+        <item name="cornerRadius">24dp</item>
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">24dp</item>
         <item name="backgroundTint">?attr/colorPrimary</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:translationZ">8dp</item>
     </style>
 
-    <style name="Widget.AsistenciaQR.TextInputLayout.Filled" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="boxCornerRadiusTopStart">12dp</item>
-        <item name="boxCornerRadiusTopEnd">12dp</item>
-        <item name="boxCornerRadiusBottomStart">12dp</item>
-        <item name="boxCornerRadiusBottomEnd">12dp</item>
-        <item name="hintTextColor">?attr/colorPrimary</item>
-        <item name="boxBackgroundColor">@android:color/transparent</item>
+    <style name="Widget.AsistenciaQR.TextInputLayout.Filled" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!-- Esquinas redondeadas -->
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+
+        <!-- Fondo sólido -->
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxBackgroundMode">outline</item>
+
+        <!-- Colores de borde -->
         <item name="boxStrokeColor">?attr/colorPrimary</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
+
+        <!-- Colores de texto -->
+        <item name="hintTextColor">?attr/colorPrimary</item>
+        <item name="android:textColorHint">@color/gray_600</item>
+
+        <!-- Animaciones y efectos -->
+        <item name="hintAnimationEnabled">true</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:translationZ">4dp</item>
+
+        <!-- Apariencia del texto -->
+        <item name="hintTextAppearance">@style/TextAppearance.AsistenciaQR.Hint</item>
+        <item name="errorTextAppearance">@style/TextAppearance.AsistenciaQR.Error</item>
+    </style>
+
+    <!-- Estilo para el hint animado -->
+    <style name="TextAppearance.AsistenciaQR.Hint" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Estilo para mensajes de error -->
+    <style name="TextAppearance.AsistenciaQR.Error" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/red_600</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>
