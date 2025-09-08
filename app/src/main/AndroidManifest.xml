@@ -12,17 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AsistenciaQR"
         tools:targetApi="31">
+
+        <!-- LoginActivity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.auth.LoginActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.AsistenciaQR">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- RegisterActivity -->
+        <activity
+            android:name=".presentation.auth.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AsistenciaQR" />
+
+        <!-- MainActivity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AsistenciaQR" />
+
     </application>
 
 </manifest>

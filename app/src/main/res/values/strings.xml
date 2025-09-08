@@ -1,3 +1,37 @@
 <resources>
     <string name="app_name">AsistenciaQR</string>
+
+    <!-- Descripciones -->
+    <string name="desc_ic_login">Icono en el login</string>
+
+    <!-- Hints -->
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_password_confirm">Confirmar contraseña</string>
+    <string name="hint_Nombres">Nombres</string>
+    <string name="hint_Apellidos">Apellidos</string>
+
+    <!-- Botones -->
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="btn_register">Registrarse</string>
+    <string name="btn_forgot_password">¿Olvidaste tu contraseña?</string>
+
+    <!-- Errores de validación -->
+    <string name="error_invalid_email">Ingrese un correo válido</string>
+    <string name="error_short_password">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="error_password_mismatch">Las contraseñas no coinciden</string>
+    <string name="error_empty_names">Ingrese sus nombres</string>
+    <string name="error_empty_lastnames">Ingrese sus apellidos</string>
+
+    <!-- Errores generales -->
+    <string name="register_error">Error al registrar usuario</string>
+    <string name="login_error">Error al iniciar sesión</string>
+
+    <!-- Mensajes de éxito -->
+    <string name="register_success">Usuario registrado exitosamente</string>
+    <string name="login_success">Inicio de sesión exitoso</string>
+
+    <!-- Títulos -->
+    <string name="title_register">Registrarse</string>
+    <string name="title_login">Iniciar Sesión</string>
 </resources>

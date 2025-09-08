@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -35,6 +38,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        viewBinding = true
         compose = true
     }
 }
@@ -49,6 +53,48 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.constraintlayout)
+
+    // Navigation
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.livedata)
+
+    // CameraX
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
+    // Location
+    implementation(libs.play.services.location)
+
+    // ZXing
+    implementation(libs.zxing.core)
+
+    // Coroutines
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.kotlinx.coroutines.play.services)
+
+    // Firebase
+    implementation (platform(libs.firebase.bom))
+    implementation (libs.firebase.firestore)
+    implementation (libs.firebase.auth)
+
+
+    // Utilidades
+    implementation (libs.timber)
+    implementation (libs.gson)
+    implementation (libs.workmanager)
+
+    implementation (libs.glide)
+    implementation(libs.androidx.activity)
+    ksp (libs.glide.ksp)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

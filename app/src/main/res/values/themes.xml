@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.AsistenciaQR" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Tema base para Material 3 en XML -->
+    <style name="Base.Theme.AsistenciaQR" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorAccent">@color/teal_200</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Configurar estilos por defecto para componentes -->
+        <item name="materialButtonStyle">@style/Widget.AsistenciaQR.Button.Filled</item>
+        <item name="textInputStyle">@style/Widget.AsistenciaQR.TextInputLayout.Filled</item>
+    </style>
+
+    <style name="Theme.AsistenciaQR" parent="Base.Theme.AsistenciaQR" />
+
+    <!-- Estilos personalizados para componentes -->
+    <style name="Widget.AsistenciaQR.Button.Filled" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Widget.AsistenciaQR.TextInputLayout.Filled" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="hintTextColor">?attr/colorPrimary</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxStrokeColor">?attr/colorPrimary</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+    </style>
+
 </resources>
