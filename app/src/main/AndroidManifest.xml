@@ -24,12 +24,6 @@
             </intent-filter>
         </activity>
 
-        <!-- RegisterActivity -->
-        <activity
-            android:name=".presentation.auth.RegisterActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AsistenciaQR" />
-
         <!-- MainActivity -->
         <activity
             android:name=".MainActivity"

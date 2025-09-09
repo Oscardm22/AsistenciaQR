@@ -1,22 +1,21 @@
 package com.example.asistenciaqr.presentation.auth
 
-import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.asistenciaqr.MainActivity
-import com.example.asistenciaqr.data.model.User
+import com.example.asistenciaqr.R
 import com.example.asistenciaqr.data.repository.AuthRepositoryImpl
 import com.example.asistenciaqr.databinding.ActivityLoginBinding
 import com.example.asistenciaqr.domain.usecase.LoginUseCase
-import com.example.asistenciaqr.domain.usecase.RegisterUseCase
 import com.example.asistenciaqr.presentation.viewmodel.AuthState
 import com.example.asistenciaqr.presentation.viewmodel.AuthViewModel
 import com.example.asistenciaqr.util.AuthViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -32,14 +31,14 @@ class LoginActivity : AppCompatActivity() {
         setupViewModel()
         setupObservers()
         setupListeners()
+        setupTextWatchers()
         checkCurrentUser()
     }
 
     private fun setupViewModel() {
         val authRepository = AuthRepositoryImpl()
         val loginUseCase = LoginUseCase(authRepository)
-        val registerUseCase = RegisterUseCase(authRepository)
-        viewModel = ViewModelProvider(this, AuthViewModelFactory(loginUseCase, registerUseCase))[AuthViewModel::class.java]
+        viewModel = ViewModelProvider(this, AuthViewModelFactory(loginUseCase))[AuthViewModel::class.java]
     }
 
     private fun setupObservers() {
@@ -48,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
                 is AuthState.Loading -> showLoading(true)
                 is AuthState.Success -> {
                     showLoading(false)
-                    navigateToMainActivity(state.user)
+                    showSuccess(getString(R.string.login_success))
                 }
                 is AuthState.Error -> {
                     showLoading(false)
@@ -67,22 +66,60 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.login(email, password)
             }
         }
+    }
 
-        binding.tvRegister.setOnClickListener {
-            navigateToRegister()
+    private fun setupTextWatchers() {
+        // TextWatcher para el campo de email
+        binding.etEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                // Limpiar error cuando el usuario empiece a escribir
+                binding.emailInputLayout.error = null
+            }
+        })
+
+        // TextWatcher para el campo de password
+        binding.etPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                // Limpiar error cuando el usuario empiece a escribir
+                binding.passwordInputLayout.error = null
+            }
+        })
+
+        // FocusChangeListener para email
+        binding.etEmail.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // Limpiar error cuando el campo obtenga focus
+                binding.emailInputLayout.error = null
+            }
+        }
+
+        // FocusChangeListener para password
+        binding.etPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // Limpiar error cuando el campo obtenga focus
+                binding.passwordInputLayout.error = null
+            }
         }
     }
 
     private fun validateInputs(email: String, password: String): Boolean {
         var isValid = true
 
+        // Reset errors
+        binding.emailInputLayout.error = null
+        binding.passwordInputLayout.error = null
+
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.etEmail.error = "Ingrese un correo válido"
+            binding.emailInputLayout.error = getString(R.string.error_invalid_email)
             isValid = false
         }
 
         if (password.isEmpty() || password.length < 6) {
-            binding.etPassword.error = "La contraseña debe tener al menos 6 caracteres"
+            binding.passwordInputLayout.error = getString(R.string.error_short_password)
             isValid = false
         }
 
@@ -98,20 +135,8 @@ class LoginActivity : AppCompatActivity() {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun navigateToMainActivity(user: User) {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("USER_ID", user.uid)
-            putExtra("USER_NAMES", user.names)
-            putExtra("USER_LASTNAMES", user.lastnames)
-            putExtra("IS_ADMIN", user.isAdmin)
-        }
-        startActivity(intent)
-        finish()
-    }
-
-    private fun navigateToRegister() {
-        val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
+    private fun showSuccess(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun checkCurrentUser() {
@@ -119,7 +144,6 @@ class LoginActivity : AppCompatActivity() {
             val authRepository = AuthRepositoryImpl()
             val currentUser = authRepository.getCurrentUser()
             currentUser?.let {
-                navigateToMainActivity(it)
             }
         }
     }
