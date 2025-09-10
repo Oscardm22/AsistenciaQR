@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">AsistenciaQR</string>
+    <string name="recover_password">Recuperar Contraseña</string>
 
     <!-- Descripciones -->
     <string name="desc_ic_login">Icono en el login</string>
@@ -10,11 +11,13 @@
     <string name="hint_password_confirm">Confirmar contraseña</string>
     <string name="hint_Nombres">Nombres</string>
     <string name="hint_Apellidos">Apellidos</string>
+    <string name="hint_enter_email_recovery">Ingresa tu email para recuperar tu contraseña</string>
 
     <!-- Botones -->
     <string name="btn_login">Iniciar sesión</string>
-    <string name="btn_register">Registrarse</string>
     <string name="btn_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="send">Enviar</string>
+    <string name="cancel">Cancelar</string>
 
     <!-- Errores de validación -->
     <string name="error_invalid_email">Ingrese un correo válido</string>
@@ -22,16 +25,10 @@
     <string name="error_password_mismatch">Las contraseñas no coinciden</string>
     <string name="error_empty_names">Ingrese sus nombres</string>
     <string name="error_empty_lastnames">Ingrese sus apellidos</string>
-
-    <!-- Errores generales -->
-    <string name="register_error">Error al registrar usuario</string>
-    <string name="login_error">Error al iniciar sesión</string>
+    <string name="error_send_email">Error al enviar email de recuperación</string>
 
     <!-- Mensajes de éxito -->
-    <string name="register_success">Usuario registrado exitosamente</string>
     <string name="login_success">Inicio de sesión exitoso</string>
+    <string name="recovery_email_sent">Se ha enviado un email de recuperación a tu correo</string>
 
-    <!-- Títulos -->
-    <string name="title_register">Registrarse</string>
-    <string name="title_login">Iniciar Sesión</string>
 </resources>

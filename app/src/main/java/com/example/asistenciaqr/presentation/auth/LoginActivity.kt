@@ -38,7 +38,10 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         val authRepository = AuthRepositoryImpl()
         val loginUseCase = LoginUseCase(authRepository)
-        viewModel = ViewModelProvider(this, AuthViewModelFactory(loginUseCase))[AuthViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            AuthViewModelFactory(loginUseCase, authRepository)
+        )[AuthViewModel::class.java]
     }
 
     private fun setupObservers() {
@@ -48,6 +51,20 @@ class LoginActivity : AppCompatActivity() {
                 is AuthState.Success -> {
                     showLoading(false)
                     showSuccess(getString(R.string.login_success))
+                }
+                is AuthState.Error -> {
+                    showLoading(false)
+                    showError(state.message)
+                }
+            }
+        }
+
+        viewModel.recoveryState.observe(this) { state ->
+            when (state) {
+                is AuthState.Loading -> showLoading(true)
+                is AuthState.Success -> {
+                    showLoading(false)
+                    showSuccess(getString(R.string.recovery_email_sent))
                 }
                 is AuthState.Error -> {
                     showLoading(false)
@@ -66,6 +83,19 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.login(email, password)
             }
         }
+
+        binding.tvForgotPassword.setOnClickListener {
+            showRecoveryDialogFragment()
+        }
+    }
+
+    private fun showRecoveryDialogFragment() {
+        val recoveryDialog = RecoveryDialogFragment().apply {
+            onEmailSubmitted = { email ->
+                viewModel.sendPasswordResetEmail(email)
+            }
+        }
+        recoveryDialog.show(supportFragmentManager, "RecoveryDialogFragment")
     }
 
     private fun setupTextWatchers() {
@@ -74,7 +104,6 @@ class LoginActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                // Limpiar error cuando el usuario empiece a escribir
                 binding.emailInputLayout.error = null
             }
         })
@@ -84,7 +113,6 @@ class LoginActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                // Limpiar error cuando el usuario empiece a escribir
                 binding.passwordInputLayout.error = null
             }
         })
@@ -92,7 +120,6 @@ class LoginActivity : AppCompatActivity() {
         // FocusChangeListener para email
         binding.etEmail.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                // Limpiar error cuando el campo obtenga focus
                 binding.emailInputLayout.error = null
             }
         }
@@ -100,7 +127,6 @@ class LoginActivity : AppCompatActivity() {
         // FocusChangeListener para password
         binding.etPassword.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                // Limpiar error cuando el campo obtenga focus
                 binding.passwordInputLayout.error = null
             }
         }
@@ -109,7 +135,6 @@ class LoginActivity : AppCompatActivity() {
     private fun validateInputs(email: String, password: String): Boolean {
         var isValid = true
 
-        // Reset errors
         binding.emailInputLayout.error = null
         binding.passwordInputLayout.error = null
 
@@ -129,6 +154,7 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoading(show: Boolean) {
         binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
         binding.btnLogin.isEnabled = !show
+        binding.tvForgotPassword.isEnabled = !show
     }
 
     private fun showError(message: String) {

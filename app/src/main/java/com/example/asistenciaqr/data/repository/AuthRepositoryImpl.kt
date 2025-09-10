@@ -79,4 +79,13 @@ class AuthRepositoryImpl : AuthRepository {
     override fun logout() {
         auth.signOut()
     }
+
+    override suspend fun sendPasswordResetEmail(email: String): Result<Boolean> {
+        return try {
+            auth.sendPasswordResetEmail(email).await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

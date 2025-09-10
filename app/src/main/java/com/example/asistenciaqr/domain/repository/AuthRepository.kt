@@ -8,4 +8,5 @@ interface AuthRepository {
     suspend fun getCurrentUser(): User?
     fun logout()
     suspend fun saveUserToFirestore(user: User): Result<Boolean>
+    suspend fun sendPasswordResetEmail(email: String): Result<Boolean>
 }
