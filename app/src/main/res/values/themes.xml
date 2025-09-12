@@ -22,6 +22,14 @@
 
     <style name="Theme.AsistenciaQR" parent="Base.Theme.AsistenciaQR" />
 
+    <!-- Tema para el Splash Screen -->
+    <style name="Theme.AsistenciaQR.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.AsistenciaQR</item>
+    </style>
+
     <!-- Estilos personalizados para componentes -->
     <style name="Widget.AsistenciaQR.Button.Filled" parent="Widget.MaterialComponents.Button">
         <item name="android:textAllCaps">false</item>

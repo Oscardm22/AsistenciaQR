@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,24 +15,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AsistenciaQR"
         tools:targetApi="31">
-
-        <!-- LoginActivity -->
+        <activity
+            android:name=".presentation.attendance.ViewAttendanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.attendance.QrScannerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.admin.GenerateQrActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.admin.ManageTeachersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:exported="false" />
+        <!-- LoginActivity con tema de Splash Screen -->
         <activity
             android:name=".presentation.auth.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.AsistenciaQR">
+            android:theme="@style/Theme.AsistenciaQR.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- MainActivity -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AsistenciaQR" />
-
     </application>
 
 </manifest>

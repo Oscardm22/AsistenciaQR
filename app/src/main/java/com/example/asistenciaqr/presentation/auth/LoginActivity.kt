@@ -1,17 +1,21 @@
 package com.example.asistenciaqr.presentation.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.asistenciaqr.R
+import com.example.asistenciaqr.data.model.User
 import com.example.asistenciaqr.data.repository.AuthRepositoryImpl
 import com.example.asistenciaqr.databinding.ActivityLoginBinding
-import com.example.asistenciaqr.domain.usecase.LoginUseCase
+import com.example.asistenciaqr.presentation.main.MainActivity
 import com.example.asistenciaqr.presentation.viewmodel.AuthState
 import com.example.asistenciaqr.presentation.viewmodel.AuthViewModel
 import com.example.asistenciaqr.util.AuthViewModelFactory
@@ -22,9 +26,22 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: AuthViewModel
+    private val authRepository = AuthRepositoryImpl()
+    private var keepSplashOnScreen = true
+    private lateinit var splashScreen: SplashScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
+
+        splashScreen.setKeepOnScreenCondition { keepSplashOnScreen }
+
+        // Verificar usuario primero
+        checkCurrentUser()
+    }
+
+    private fun initializeUI() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -32,15 +49,12 @@ class LoginActivity : AppCompatActivity() {
         setupObservers()
         setupListeners()
         setupTextWatchers()
-        checkCurrentUser()
     }
 
     private fun setupViewModel() {
-        val authRepository = AuthRepositoryImpl()
-        val loginUseCase = LoginUseCase(authRepository)
         viewModel = ViewModelProvider(
             this,
-            AuthViewModelFactory(loginUseCase, authRepository)
+            AuthViewModelFactory(authRepository)
         )[AuthViewModel::class.java]
     }
 
@@ -51,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
                 is AuthState.Success -> {
                     showLoading(false)
                     showSuccess(getString(R.string.login_success))
+                    navigateToMainActivity(state.user)
                 }
                 is AuthState.Error -> {
                     showLoading(false)
@@ -72,6 +87,15 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun navigateToMainActivity(user: User) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("USER", user)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
     }
 
     private fun setupListeners() {
@@ -167,9 +191,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkCurrentUser() {
         lifecycleScope.launch {
-            val authRepository = AuthRepositoryImpl()
             val currentUser = authRepository.getCurrentUser()
-            currentUser?.let {
+            if (currentUser != null) {
+                // Si ya hay un usuario logeado, navegar directamente sin mostrar el login
+                navigateToMainActivity(currentUser)
+            } else {
+                // Si no hay usuario logeado, mostrar la interfaz de login
+                keepSplashOnScreen = false // Quitar el splash screen
+                initializeUI() // Mostrar la UI del login
             }
         }
     }

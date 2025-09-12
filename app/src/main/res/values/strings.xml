@@ -1,6 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AsistenciaQR</string>
     <string name="recover_password">Recuperar Contraseña</string>
+    <string name="role_administrator">Administrador</string>
+    <string name="role_teacher" tools:ignore="Typos">Profesor</string>
+    <string name="tvWelcome">Bienvenido</string>
+    <string name="tvRole">Rol</string>
+    <string name="admin_section">Administración</string>
 
     <!-- Descripciones -->
     <string name="desc_ic_login">Icono en el login</string>
@@ -18,17 +23,26 @@
     <string name="btn_forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="send">Enviar</string>
     <string name="cancel">Cancelar</string>
+    <string name="scan_qr">Escanear QR de Asistencia</string>
+    <string name="view_my_attendance">Ver Mis Asistencias</string>
+    <string name="manage_teachers">Gestionar Profesores</string>
+    <string name="generate_qr">Generar QR para Profesores</string>
+    <string name="view_all_attendance">Ver Todas las Asistencias</string>
+    <string name="logout">Cerrar Sesión</string>
 
-    <!-- Errores de validación -->
+    <!-- Errores -->
     <string name="error_invalid_email">Ingrese un correo válido</string>
     <string name="error_short_password">La contraseña debe tener al menos 6 caracteres</string>
     <string name="error_password_mismatch">Las contraseñas no coinciden</string>
     <string name="error_empty_names">Ingrese sus nombres</string>
     <string name="error_empty_lastnames">Ingrese sus apellidos</string>
     <string name="error_send_email">Error al enviar email de recuperación</string>
+    <string name="error_user_info">Error: No se pudo obtener información del usuario</string>
 
     <!-- Mensajes de éxito -->
     <string name="login_success">Inicio de sesión exitoso</string>
     <string name="recovery_email_sent">Se ha enviado un email de recuperación a tu correo</string>
 
+    //Formatos
+    <string name="welcome_message">Bienvenido, %s</string>
 </resources>

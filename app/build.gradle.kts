@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.splashscreen)
 
     // Navigation
     implementation(libs.androidx.navigation.fragment)
