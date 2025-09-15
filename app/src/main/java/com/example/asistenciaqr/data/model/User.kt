@@ -10,7 +10,7 @@ data class User(
     val email: String = "",
     val names: String = "",
     val lastnames: String = "",
-    val isAdmin: Boolean = false,
+    val admin: Boolean = false,
     val photoBase64: String? = null,
     val qrCodeData: String? = null,
     val createdAt: Date = Date(),

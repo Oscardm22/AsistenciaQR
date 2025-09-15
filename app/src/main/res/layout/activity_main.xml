@@ -34,14 +34,17 @@
 
                 <TextView
                     android:id="@+id/tvWelcome"
-                    android:layout_width="328dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:gravity="center"
-                    android:text="@string/tvWelcome"
+                    android:text="@string/welcome_message"
                     android:textColor="@color/russian_violet"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="4sp" />
 
                 <TextView
                     android:id="@+id/tvRole"
@@ -99,7 +102,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:visibility="gone"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"

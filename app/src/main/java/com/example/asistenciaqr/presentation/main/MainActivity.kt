@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         binding.tvWelcome.text = getString(R.string.welcome_message, currentUser.names)
 
         // Usar recursos para los roles
-        binding.tvRole.text = if (currentUser.isAdmin) {
+        binding.tvRole.text = if (currentUser.admin) {
             getString(R.string.role_administrator)
         } else {
             getString(R.string.role_teacher)
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         binding.tvAdminSection.text = getString(R.string.admin_section)
 
         // Mostrar u ocultar funcionalidades de administrador
-        if (currentUser.isAdmin) {
+        if (currentUser.admin) {
             binding.tvAdminSection.visibility = View.VISIBLE
             binding.btnManageTeachers.visibility = View.VISIBLE
             binding.btnGenerateQr.visibility = View.VISIBLE
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Botones solo para administradores
-        if (currentUser.isAdmin) {
+        if (currentUser.admin) {
             binding.btnManageTeachers.setOnClickListener {
                 startActivity(Intent(this, ManageTeachersActivity::class.java))
             }
