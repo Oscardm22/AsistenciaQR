@@ -18,6 +18,8 @@
         <!-- Configurar estilos por defecto para componentes -->
         <item name="materialButtonStyle">@style/Widget.AsistenciaQR.Button.Filled</item>
         <item name="textInputStyle">@style/Widget.AsistenciaQR.TextInputLayout.Filled</item>
+
+        <item name="android:autofilledHighlight">@android:color/transparent</item>
     </style>
 
     <style name="Theme.AsistenciaQR" parent="Base.Theme.AsistenciaQR" />

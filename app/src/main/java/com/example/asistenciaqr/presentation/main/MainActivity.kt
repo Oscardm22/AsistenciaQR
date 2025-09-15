@@ -85,13 +85,11 @@ class MainActivity : AppCompatActivity() {
 
         // Mostrar u ocultar funcionalidades de administrador
         if (currentUser.isAdmin) {
-            binding.divider.visibility = View.VISIBLE
             binding.tvAdminSection.visibility = View.VISIBLE
             binding.btnManageTeachers.visibility = View.VISIBLE
             binding.btnGenerateQr.visibility = View.VISIBLE
             binding.btnViewAllAttendance.visibility = View.VISIBLE
         } else {
-            binding.divider.visibility = View.GONE
             binding.tvAdminSection.visibility = View.GONE
             binding.btnManageTeachers.visibility = View.GONE
             binding.btnGenerateQr.visibility = View.GONE

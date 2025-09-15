@@ -52,10 +52,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            AuthViewModelFactory(authRepository)
-        )[AuthViewModel::class.java]
+        val factory = AuthViewModelFactory(authRepository, applicationContext)
+        viewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
     }
 
     private fun setupObservers() {

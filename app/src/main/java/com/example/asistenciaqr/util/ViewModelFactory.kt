@@ -8,7 +8,6 @@ import com.example.asistenciaqr.domain.repository.UserRepository
 import com.example.asistenciaqr.domain.usecase.*
 import com.example.asistenciaqr.presentation.viewmodel.AdminViewModel
 import com.example.asistenciaqr.presentation.viewmodel.AttendanceViewModel
-import com.example.asistenciaqr.presentation.viewmodel.AuthViewModel
 import com.example.asistenciaqr.presentation.viewmodel.TeacherViewModel
 
 class ViewModelFactory(
@@ -20,10 +19,6 @@ class ViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(AuthViewModel::class.java) -> {
-                val loginUseCase = LoginUseCase(authRepository)
-                AuthViewModel(loginUseCase, authRepository) as T
-            }
             modelClass.isAssignableFrom(TeacherViewModel::class.java) -> {
                 val getTeacherUseCase = GetTeacherUseCase(userRepository)
                 val generateQrUseCase = GenerateQrUseCase(userRepository)

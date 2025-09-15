@@ -38,6 +38,10 @@
     <string name="error_empty_lastnames">Ingrese sus apellidos</string>
     <string name="error_send_email">Error al enviar email de recuperación</string>
     <string name="error_user_info">Error: No se pudo obtener información del usuario</string>
+    <string name="error_no_internet">No hay conexión a internet. Verifica tu conexión e intenta nuevamente.</string>
+    <string name="error_invalid_credentials">Credenciales incorrectas. Verifica tu email y contraseña.</string>
+    <string name="error_user_not_found">Usuario no encontrado. Verifica tu email o regístrate.</string>
+    <string name="error_login_general">Error al iniciar sesión: %s</string>
 
     <!-- Mensajes de éxito -->
     <string name="login_success">Inicio de sesión exitoso</string>
@@ -45,4 +49,7 @@
 
     //Formatos
     <string name="welcome_message">Bienvenido, %s</string>
+
+
+
 </resources>
