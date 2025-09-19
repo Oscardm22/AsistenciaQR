@@ -16,6 +16,12 @@
         android:theme="@style/Theme.AsistenciaQR"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.admin.EditTeacherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.admin.AddTeacherActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.attendance.ViewAttendanceActivity"
             android:exported="false" />
         <activity
@@ -29,14 +35,14 @@
             android:exported="false" />
         <activity
             android:name=".presentation.main.MainActivity"
-            android:exported="false" />
-        <!-- LoginActivity con tema de Splash Screen -->
+            android:exported="false" /> <!-- LoginActivity con tema de Splash Screen -->
         <activity
             android:name=".presentation.auth.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.AsistenciaQR.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

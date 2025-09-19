@@ -92,6 +92,7 @@
     </style>
 
     <style name="ThemeOverlay.AsistenciaQR.AlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/white</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.AsistenciaQR.DialogButton.Positive</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.AsistenciaQR.DialogButton.Negative</item>
         <item name="android:textColorPrimary">@color/black</item>
@@ -113,5 +114,14 @@
         <item name="android:minHeight">48dp</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="ThemeOverlay.AsistenciaQR.AlertDialog.Delete" parent="ThemeOverlay.AsistenciaQR.AlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.AsistenciaQR.DialogButton.Positive.Delete</item>
+    </style>
+
+    <!-- Botón positivo para eliminación (rojo) -->
+    <style name="Widget.AsistenciaQR.DialogButton.Positive.Delete" parent="Widget.AsistenciaQR.DialogButton.Positive">
+        <item name="android:textColor">@color/red_500</item>
     </style>
 </resources>

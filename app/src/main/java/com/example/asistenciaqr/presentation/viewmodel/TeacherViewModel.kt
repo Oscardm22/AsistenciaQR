@@ -5,58 +5,81 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.asistenciaqr.data.model.User
-import com.example.asistenciaqr.domain.usecase.GenerateQrUseCase
-import com.example.asistenciaqr.domain.usecase.GetTeacherUseCase
+import com.example.asistenciaqr.domain.usecase.AddTeacherUseCase
+import com.example.asistenciaqr.domain.usecase.SoftDeleteTeacherUseCase
+import com.example.asistenciaqr.domain.usecase.GetTeachersUseCase
+import com.example.asistenciaqr.domain.usecase.UpdateTeacherUseCase
 import kotlinx.coroutines.launch
 
 class TeacherViewModel(
-    private val getTeacherUseCase: GetTeacherUseCase,
-    private val generateQrUseCase: GenerateQrUseCase
+    private val getTeachersUseCase: GetTeachersUseCase,
+    private val addTeacherUseCase: AddTeacherUseCase,
+    private val updateTeacherUseCase: UpdateTeacherUseCase,
+    private val softDeleteTeacherUseCase: SoftDeleteTeacherUseCase
 ) : ViewModel() {
 
-    private val _teacherState = MutableLiveData<TeacherState>()
-    val teacherState: LiveData<TeacherState> = _teacherState
+    private val _teachers = MutableLiveData<List<User>>()
+    val teachers: LiveData<List<User>> = _teachers
 
-    private val _qrState = MutableLiveData<QrState>()
-    val qrState: LiveData<QrState> = _qrState
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
 
-    fun getTeacher(userId: String) {
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
+    fun loadTeachers() {
         viewModelScope.launch {
-            _teacherState.value = TeacherState.Loading
-            val result = getTeacherUseCase.execute(userId)
-            if (result.isSuccess) {
-                _teacherState.value = TeacherState.Success(result.getOrNull()!!)
-            } else {
-                _teacherState.value = TeacherState.Error(
-                    result.exceptionOrNull()?.message ?: "Error al obtener datos del profesor"
-                )
+            _loading.value = true
+            try {
+                val teachersList = getTeachersUseCase.execute()
+                _teachers.value = teachersList
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Error al cargar profesores"
+            } finally {
+                _loading.value = false
             }
         }
     }
 
-    fun generateQr(userId: String) {
+    fun addTeacher(user: User, password: String) {
         viewModelScope.launch {
-            _qrState.value = QrState.Loading
-            val result = generateQrUseCase.execute(userId)
-            if (result.isSuccess) {
-                _qrState.value = QrState.Success(result.getOrNull()!!)
-            } else {
-                _qrState.value = QrState.Error(
-                    result.exceptionOrNull()?.message ?: "Error al generar QR"
-                )
+            _loading.value = true
+            try {
+                addTeacherUseCase.execute(user, password)
+                loadTeachers() // Recargar la lista
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Error al agregar profesor"
+            } finally {
+                _loading.value = false
             }
         }
     }
-}
 
-sealed class TeacherState {
-    object Loading : TeacherState()
-    data class Success(val user: User) : TeacherState()
-    data class Error(val message: String) : TeacherState()
-}
+    fun updateTeacher(user: User) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                updateTeacherUseCase.execute(user)
+                loadTeachers() // Recargar la lista
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Error al actualizar profesor"
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
 
-sealed class QrState {
-    object Loading : QrState()
-    data class Success(val qrData: String) : QrState()
-    data class Error(val message: String) : QrState()
+    fun deleteTeacher(userId: String) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                softDeleteTeacherUseCase.execute(userId)
+                loadTeachers() // Recargar la lista
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Error al eliminar profesor"
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
 }

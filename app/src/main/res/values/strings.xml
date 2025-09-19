@@ -6,9 +6,15 @@
     <string name="tvWelcome">Bienvenido</string>
     <string name="tvRole">Rol</string>
     <string name="admin_section">Administración</string>
+    <string name="teacher_full_name">%1$s %2$s</string>
+    <string name="status_active">Activo</string>
+    <string name="status_inactive">Inactivo</string>
 
     <!-- Descripciones -->
     <string name="desc_ic_login">Icono en el login</string>
+    <string name="desc_ic_add">Icono de añadir</string>
+    <string name="desc_ic_edit">Icono de editar</string>
+    <string name="desc_ic_delete">Icono de eliminar</string>
 
     <!-- Hints -->
     <string name="hint_email">Correo electrónico</string>
@@ -49,7 +55,6 @@
 
     //Formatos
     <string name="welcome_message">Bienvenido, %s</string>
-
 
 
 </resources>

@@ -14,5 +14,5 @@ data class User(
     val photoBase64: String? = null,
     val qrCodeData: String? = null,
     val createdAt: Date = Date(),
-    val isActive: Boolean = true
+    val active: Boolean = true
 ) : Parcelable
