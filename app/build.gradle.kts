@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.splashscreen)
+    implementation (libs.ucrop)
 
     // Navigation
     implementation(libs.androidx.navigation.fragment)

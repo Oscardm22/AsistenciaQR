@@ -16,8 +16,9 @@ import com.example.asistenciaqr.databinding.ActivityAddTeacherBinding
 import com.example.asistenciaqr.presentation.viewmodel.TeacherViewModel
 import com.example.asistenciaqr.util.TeacherViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import com.yalantis.ucrop.UCrop
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
+import java.io.File
 import java.util.Date
 
 class AddTeacherActivity : AppCompatActivity() {
@@ -41,9 +42,9 @@ class AddTeacherActivity : AppCompatActivity() {
             }
 
             imageBitmap?.let {
-                photoBase64 = convertBitmapToBase64(it)
-                binding.ivPhotoPreview.setImageBitmap(it)
-                binding.ivPhotoPreview.visibility = android.view.View.VISIBLE
+                // Guardar bitmap temporalmente y abrir UCrop
+                val tempUri = saveBitmapToTempUri(it)
+                startCropActivity(tempUri)
             }
         }
     }
@@ -53,15 +54,23 @@ class AddTeacherActivity : AppCompatActivity() {
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let {
-            try {
-                val inputStream: InputStream? = contentResolver.openInputStream(it)
-                val imageBitmap = android.graphics.BitmapFactory.decodeStream(inputStream)
-                photoBase64 = convertBitmapToBase64(imageBitmap)
-                binding.ivPhotoPreview.setImageBitmap(imageBitmap)
-                binding.ivPhotoPreview.visibility = android.view.View.VISIBLE
-            } catch (e: Exception) {
-                showError("Error al cargar la imagen: ${e.message}")
+            // Abrir UCrop directamente con la URI de la imagen seleccionada
+            startCropActivity(it)
+        }
+    }
+
+    // Contract para el resultado de UCrop (usando StartActivityForResult)
+    private val cropImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val resultUri = result.data?.let { UCrop.getOutput(it) }
+            resultUri?.let {
+                processCroppedImage(it)
             }
+        } else if (result.resultCode == UCrop.RESULT_ERROR) {
+            val cropError = result.data?.let { UCrop.getError(it) }
+            showError("Error al recortar imagen: ${cropError?.message}")
         }
     }
 
@@ -81,7 +90,6 @@ class AddTeacherActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-
         viewModel.error.observe(this) { errorMessage ->
             errorMessage?.let { showError(it) }
         }
@@ -89,6 +97,15 @@ class AddTeacherActivity : AppCompatActivity() {
         viewModel.teachers.observe(this) {
             showSuccess("Profesor agregado correctamente")
             finish()
+        }
+
+        viewModel.loading.observe(this) { isLoading ->
+            binding.btnSaveTeacher.isEnabled = !isLoading
+            if (isLoading) {
+                binding.btnSaveTeacher.text = getString(R.string.saving)
+            } else {
+                binding.btnSaveTeacher.text = getString(R.string.save_user)
+            }
         }
     }
 
@@ -116,6 +133,31 @@ class AddTeacherActivity : AppCompatActivity() {
         binding.btnTakePhoto.setOnClickListener {
             showPhotoOptionsDialog()
         }
+
+        // Botón para eliminar foto seleccionada
+        binding.ivPhotoPreview.setOnClickListener {
+            showRemovePhotoDialog()
+        }
+    }
+
+    private fun showRemovePhotoDialog() {
+        val builder = android.app.AlertDialog.Builder(
+            this,
+            R.style.ThemeOverlay_AsistenciaQR_AlertDialog_Delete
+        )
+
+        builder.setTitle("Eliminar foto")
+            .setMessage("¿Quieres eliminar la foto seleccionada?")
+            .setPositiveButton("Eliminar") { dialog, _ ->
+                binding.ivPhotoPreview.setImageDrawable(null)
+                binding.ivPhotoPreview.visibility = android.view.View.GONE
+                photoBase64 = null
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun showPhotoOptionsDialog() {
@@ -139,8 +181,54 @@ class AddTeacherActivity : AppCompatActivity() {
     }
 
     private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickImageLauncher.launch(intent.toString())
+        pickImageLauncher.launch("image/*")
+    }
+
+    private fun startCropActivity(sourceUri: Uri) {
+        // Configurar opciones de UCrop
+        val options = UCrop.Options()
+        options.setToolbarColor(ContextCompat.getColor(this, R.color.purple_500))
+        options.setStatusBarColor(ContextCompat.getColor(this, R.color.purple_700))
+        options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.white))
+
+        // Crear URI de destino para la imagen recortada
+        val destinationUri = Uri.fromFile(File(cacheDir, "cropped_${System.currentTimeMillis()}.jpg"))
+
+        // Configurar UCrop
+        val uCrop = UCrop.of(sourceUri, destinationUri)
+            .withAspectRatio(1f, 1f) // Ratio cuadrado
+            .withMaxResultSize(500, 500) // Tamaño máximo
+            .withOptions(options)
+
+        // Lanzar UCrop usando el contract
+        cropImageLauncher.launch(uCrop.getIntent(this))
+    }
+
+    private fun processCroppedImage(uri: Uri) {
+        try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val imageBitmap = android.graphics.BitmapFactory.decodeStream(inputStream)
+
+            // Convertir a Base64
+            photoBase64 = convertBitmapToBase64(imageBitmap)
+
+            // Mostrar en ImageView
+            binding.ivPhotoPreview.setImageBitmap(imageBitmap)
+            binding.ivPhotoPreview.visibility = android.view.View.VISIBLE
+
+            showSuccess("Imagen ajustada correctamente")
+
+        } catch (e: Exception) {
+            showError("Error al procesar imagen: ${e.message}")
+        }
+    }
+
+    private fun saveBitmapToTempUri(bitmap: android.graphics.Bitmap): Uri {
+        val file = File(cacheDir, "temp_photo_${System.currentTimeMillis()}.jpg")
+        val outputStream = java.io.FileOutputStream(file)
+        bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 90, outputStream)
+        outputStream.close()
+        return Uri.fromFile(file)
     }
 
     private fun convertBitmapToBase64(bitmap: android.graphics.Bitmap): String {

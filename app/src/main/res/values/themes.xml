@@ -120,7 +120,7 @@
         <item name="buttonBarPositiveButtonStyle">@style/Widget.AsistenciaQR.DialogButton.Positive.Delete</item>
     </style>
 
-    <!-- Botón positivo para eliminación (rojo) -->
+    <!-- Botón positivo para eliminación -->
     <style name="Widget.AsistenciaQR.DialogButton.Positive.Delete" parent="Widget.AsistenciaQR.DialogButton.Positive">
         <item name="android:textColor">@color/red_500</item>
     </style>

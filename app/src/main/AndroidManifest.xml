@@ -16,6 +16,11 @@
         android:theme="@style/Theme.AsistenciaQR"
         tools:targetApi="31">
         <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait"
+            tools:replace="android:theme" />
+        <activity
             android:name=".presentation.admin.EditTeacherActivity"
             android:exported="false" />
         <activity
@@ -35,7 +40,7 @@
             android:exported="false" />
         <activity
             android:name=".presentation.main.MainActivity"
-            android:exported="false" /> <!-- LoginActivity con tema de Splash Screen -->
+            android:exported="false" />
         <activity
             android:name=".presentation.auth.LoginActivity"
             android:exported="true"
