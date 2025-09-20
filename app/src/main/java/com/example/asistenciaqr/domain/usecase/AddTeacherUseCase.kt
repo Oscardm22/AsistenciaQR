@@ -7,6 +7,6 @@ class AddTeacherUseCase(
     private val userRepository: UserRepository
 ) {
     suspend fun execute(user: User, password: String): Boolean {
-        return userRepository.addTeacher(user, password).getOrDefault(false)
+        return userRepository.addTeacher(user, password).getOrThrow()
     }
 }

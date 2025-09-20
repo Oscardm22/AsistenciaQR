@@ -46,9 +46,18 @@ class TeacherViewModel(
             _loading.value = true
             try {
                 addTeacherUseCase.execute(user, password)
-                loadTeachers() // Recargar la lista
+                loadTeachers()
             } catch (e: Exception) {
-                _error.value = e.message ?: "Error al agregar profesor"
+                val errorMessage = when (e) {
+                    is com.google.firebase.auth.FirebaseAuthUserCollisionException ->
+                        "El correo ya está en uso por otra cuenta."
+                    is com.google.firebase.auth.FirebaseAuthWeakPasswordException ->
+                        "La contraseña es demasiado débil."
+                    is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException ->
+                        "El correo ingresado no es válido."
+                    else -> e.message ?: "Error al agregar profesor"
+                }
+                _error.value = errorMessage
             } finally {
                 _loading.value = false
             }
