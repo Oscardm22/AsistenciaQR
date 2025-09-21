@@ -33,6 +33,12 @@ class TeacherViewModel(
     private val _updateCompleted = MutableLiveData<Boolean>()
     val updateCompleted: LiveData<Boolean> = _updateCompleted
 
+    private val _deleteSuccess = MutableLiveData<Boolean>()
+    val deleteSuccess: LiveData<Boolean> = _deleteSuccess
+
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String> = _message
+
     fun loadTeachers() {
         viewModelScope.launch {
             _loading.value = true
@@ -93,10 +99,15 @@ class TeacherViewModel(
         viewModelScope.launch {
             _loading.value = true
             try {
-                softDeleteTeacherUseCase.execute(userId)
-                loadTeachers() // Recargar la lista
+                val success = softDeleteTeacherUseCase.execute(userId)
+                if (success) {
+                    _message.value = "Usuario desactivado correctamente"
+                    loadTeachers() // Recargar la lista
+                } else {
+                    _message.value = "Error al desactivar usuario"
+                }
             } catch (e: Exception) {
-                _error.value = e.message ?: "Error al eliminar profesor"
+                _message.value = e.message ?: "Error al desactivar profesor"
             } finally {
                 _loading.value = false
             }

@@ -17,6 +17,13 @@ class AuthRepositoryImpl : AuthRepository {
             val firebaseUser = authResult.user
             if (firebaseUser != null) {
                 val user = getUserFromFirestore(firebaseUser.uid)
+
+                if (!user.active) {
+                    // Cerrar sesión si el usuario está inactivo
+                    auth.signOut()
+                    return Result.failure(Exception("Cuenta deshabilitada. Contacte al administrador."))
+                }
+
                 Result.success(user)
             } else {
                 Result.failure(Exception("Error al iniciar sesión"))

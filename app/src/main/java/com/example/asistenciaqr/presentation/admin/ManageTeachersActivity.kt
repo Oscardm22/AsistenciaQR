@@ -108,9 +108,9 @@ class ManageTeachersActivity : AppCompatActivity() {
         }
 
         androidx.appcompat.app.AlertDialog.Builder(this, R.style.ThemeOverlay_AsistenciaQR_AlertDialog_Delete)
-            .setTitle("Confirmar eliminación")
-            .setMessage("¿Estás seguro de que quieres eliminar a ${teacher.names} ${teacher.lastnames}?")
-            .setPositiveButton("Eliminar") { dialog, which ->
+            .setTitle("Confirmar desactivación")
+            .setMessage("¿Estás seguro de que quieres desactivar a ${teacher.names} ${teacher.lastnames}? El usuario no podrá iniciar sesión.")
+            .setPositiveButton("Desactivar") { dialog, which ->
                 viewModel.deleteTeacher(teacher.uid)
             }
             .setNegativeButton("Cancelar", null)
