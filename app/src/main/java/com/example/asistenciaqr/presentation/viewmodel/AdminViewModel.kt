@@ -28,12 +28,13 @@ class AdminViewModel(
     fun getUsers() {
         viewModelScope.launch {
             _usersState.value = AdminUsersState.Loading
-            val result = getUsersUseCase.execute()
-            if (result.isSuccess) {
-                _usersState.value = AdminUsersState.Success(result.getOrNull()!!)
-            } else {
+            try {
+                // getUsersUseCase.execute() ya devuelve List<User> directamente
+                val users = getUsersUseCase.execute()
+                _usersState.value = AdminUsersState.Success(users)
+            } catch (e: Exception) {
                 _usersState.value = AdminUsersState.Error(
-                    result.exceptionOrNull()?.message ?: "Error al obtener usuarios"
+                    e.message ?: "Error al obtener usuarios"
                 )
             }
         }

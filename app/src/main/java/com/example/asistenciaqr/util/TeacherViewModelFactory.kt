@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.asistenciaqr.data.repository.UserRepositoryImpl
 import com.example.asistenciaqr.domain.usecase.AddTeacherUseCase
-import com.example.asistenciaqr.domain.usecase.GetTeachersUseCase
+import com.example.asistenciaqr.domain.usecase.GetUsersUseCase
 import com.example.asistenciaqr.domain.usecase.SoftDeleteTeacherUseCase
 import com.example.asistenciaqr.domain.usecase.UpdateTeacherUseCase
 import com.example.asistenciaqr.presentation.viewmodel.TeacherViewModel
@@ -15,7 +15,7 @@ class TeacherViewModelFactory : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(TeacherViewModel::class.java)) {
             val userRepository = UserRepositoryImpl()
 
-            val getTeachersUseCase = GetTeachersUseCase(userRepository)
+            val getTeachersUseCase = GetUsersUseCase (userRepository)
             val addTeacherUseCase = AddTeacherUseCase(userRepository)
             val updateTeacherUseCase = UpdateTeacherUseCase(userRepository)
             val softDeleteTeacherUseCase = SoftDeleteTeacherUseCase(userRepository)

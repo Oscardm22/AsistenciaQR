@@ -12,6 +12,7 @@ import com.example.asistenciaqr.databinding.ActivityManageTeachersBinding
 import com.example.asistenciaqr.presentation.viewmodel.TeacherViewModel
 import com.example.asistenciaqr.util.TeacherViewModelFactory
 import com.example.asistenciaqr.R
+import com.example.asistenciaqr.data.model.User
 
 class ManageTeachersActivity : AppCompatActivity() {
 
@@ -92,14 +93,14 @@ class ManageTeachersActivity : AppCompatActivity() {
         }
     }
 
-    private fun openEditTeacher(teacher: com.example.asistenciaqr.data.model.User) {
+    private fun openEditTeacher(teacher: User) {
         val intent = Intent(this, EditTeacherActivity::class.java).apply {
-            putExtra("TEACHER", teacher)
+            putExtra("teacher", teacher)
         }
         startActivity(intent)
     }
 
-    private fun showDeleteConfirmation(teacher: com.example.asistenciaqr.data.model.User) {
+    private fun showDeleteConfirmation(teacher: User) {
         // No permitir eliminar administradores
         if (teacher.admin) {
             showError("No se puede eliminar un administrador")

@@ -37,6 +37,7 @@
     <string name="logout">Cerrar Sesión</string>
     <string name="saving">Guardando…</string>
     <string name="save_user">Guardar Usuario</string>
+    <string name="save_changes">Guardar Cambios</string>
 
     <!-- Errores -->
     <string name="error_invalid_email">Ingrese un correo válido</string>

@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.asistenciaqr.data.model.User
 import com.example.asistenciaqr.domain.usecase.AddTeacherUseCase
+import com.example.asistenciaqr.domain.usecase.GetUsersUseCase
 import com.example.asistenciaqr.domain.usecase.SoftDeleteTeacherUseCase
-import com.example.asistenciaqr.domain.usecase.GetTeachersUseCase
 import com.example.asistenciaqr.domain.usecase.UpdateTeacherUseCase
 import kotlinx.coroutines.launch
 
 class TeacherViewModel(
-    private val getTeachersUseCase: GetTeachersUseCase,
+    private val getTeachersUseCase: GetUsersUseCase,
     private val addTeacherUseCase: AddTeacherUseCase,
     private val updateTeacherUseCase: UpdateTeacherUseCase,
     private val softDeleteTeacherUseCase: SoftDeleteTeacherUseCase
@@ -26,6 +26,12 @@ class TeacherViewModel(
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
+
+    private val _updateSuccess = MutableLiveData<Boolean>()
+    val updateSuccess: LiveData<Boolean> = _updateSuccess
+
+    private val _updateCompleted = MutableLiveData<Boolean>()
+    val updateCompleted: LiveData<Boolean> = _updateCompleted
 
     fun loadTeachers() {
         viewModelScope.launch {
@@ -68,10 +74,15 @@ class TeacherViewModel(
         viewModelScope.launch {
             _loading.value = true
             try {
-                updateTeacherUseCase.execute(user)
-                loadTeachers() // Recargar la lista
+                val success = updateTeacherUseCase.execute(user)
+                _updateSuccess.value = success
+                if (success) {
+                    _updateCompleted.value = true
+                    loadTeachers() // Recargar lista si fue exitoso
+                }
             } catch (e: Exception) {
                 _error.value = e.message ?: "Error al actualizar profesor"
+                _updateSuccess.value = false
             } finally {
                 _loading.value = false
             }
@@ -90,5 +101,9 @@ class TeacherViewModel(
                 _loading.value = false
             }
         }
+    }
+
+    fun resetUpdateCompleted() {
+        _updateCompleted.value = false
     }
 }

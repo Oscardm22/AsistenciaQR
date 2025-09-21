@@ -17,32 +17,17 @@ class UserRepositoryImpl : UserRepository {
     override suspend fun getUsers(): Result<List<User>> {
         return try {
             val users = usersCollection
-                .whereEqualTo("active", true)
                 .get()
                 .await()
                 .toObjects(User::class.java)
 
-            Result.success(users)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun getTeachers(): Result<List<User>> {
-        return try {
-            val teachers = usersCollection
-                .whereEqualTo("active", true)
-                .get()
-                .await()
-                .toObjects(User::class.java)
-
-            teachers.forEach {
+            users.forEach {
                 println("DEBUG: ${it.names} - admin: ${it.admin}, active: ${it.active}")
             }
 
-            Result.success(teachers)
+            Result.success(users)
         } catch (e: Exception) {
-            println("DEBUG: Error en getTeachers: ${e.message}")
+            println("DEBUG: Error en getUsers: ${e.message}")
             Result.failure(e)
         }
     }
@@ -89,15 +74,16 @@ class UserRepositoryImpl : UserRepository {
         }
     }
 
-    override suspend fun getActiveTeachers(): Result<List<User>> {
+    override suspend fun getActiveUsers(): Result<List<User>> {
         return try {
-            val teachers = usersCollection
+            // Solo usuarios activos
+            val users = usersCollection
                 .whereEqualTo("active", true)
                 .get()
                 .await()
                 .toObjects(User::class.java)
 
-            Result.success(teachers)
+            Result.success(users)
         } catch (e: Exception) {
             Result.failure(e)
         }
