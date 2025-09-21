@@ -83,27 +83,20 @@ class MainActivity : AppCompatActivity() {
         binding.btnLogout.text = getString(R.string.logout)
         binding.tvAdminSection.text = getString(R.string.admin_section)
 
-        // Mostrar u ocultar funcionalidades de administrador
         if (currentUser.admin) {
-            binding.tvAdminSection.visibility = View.VISIBLE
-            binding.btnManageTeachers.visibility = View.VISIBLE
-            binding.btnGenerateQr.visibility = View.VISIBLE
-            binding.btnViewAllAttendance.visibility = View.VISIBLE
+            binding.cardAdminSection.visibility = View.VISIBLE
         } else {
-            binding.tvAdminSection.visibility = View.GONE
-            binding.btnManageTeachers.visibility = View.GONE
-            binding.btnGenerateQr.visibility = View.GONE
-            binding.btnViewAllAttendance.visibility = View.GONE
+            binding.cardAdminSection.visibility = View.GONE
         }
     }
 
     private fun setupListeners() {
-        // Botón para escanear QR (disponible para todos)
+        // Botón para escanear QR
         binding.btnScanQr.setOnClickListener {
             startActivity(Intent(this, QrScannerActivity::class.java))
         }
 
-        // Botón para ver mis asistencias (disponible para todos)
+        // Botón para ver mis asistencias
         binding.btnViewMyAttendance.setOnClickListener {
             val intent = Intent(this, ViewAttendanceActivity::class.java)
             intent.putExtra("USER_ID", currentUser.uid)
