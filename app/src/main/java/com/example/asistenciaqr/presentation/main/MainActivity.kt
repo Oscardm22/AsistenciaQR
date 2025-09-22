@@ -9,7 +9,6 @@ import com.example.asistenciaqr.R
 import com.example.asistenciaqr.databinding.ActivityMainBinding
 import com.example.asistenciaqr.data.model.User
 import com.example.asistenciaqr.data.repository.AuthRepositoryImpl
-import com.example.asistenciaqr.presentation.admin.GenerateQrActivity
 import com.example.asistenciaqr.presentation.admin.ManageTeachersActivity
 import com.example.asistenciaqr.presentation.attendance.QrScannerActivity
 import com.example.asistenciaqr.presentation.attendance.ViewAttendanceActivity
@@ -78,7 +77,6 @@ class MainActivity : AppCompatActivity() {
         binding.btnScanQr.text = getString(R.string.scan_qr)
         binding.btnViewMyAttendance.text = getString(R.string.view_my_attendance)
         binding.btnManageTeachers.text = getString(R.string.manage_teachers)
-        binding.btnGenerateQr.text = getString(R.string.generate_qr)
         binding.btnViewAllAttendance.text = getString(R.string.view_all_attendance)
         binding.btnLogout.text = getString(R.string.logout)
         binding.tvAdminSection.text = getString(R.string.admin_section)
@@ -91,12 +89,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        // Botón para escanear QR
         binding.btnScanQr.setOnClickListener {
             startActivity(Intent(this, QrScannerActivity::class.java))
         }
 
-        // Botón para ver mis asistencias
         binding.btnViewMyAttendance.setOnClickListener {
             val intent = Intent(this, ViewAttendanceActivity::class.java)
             intent.putExtra("USER_ID", currentUser.uid)
@@ -104,15 +100,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Botones solo para administradores
         if (currentUser.admin) {
             binding.btnManageTeachers.setOnClickListener {
                 startActivity(Intent(this, ManageTeachersActivity::class.java))
             }
 
-            binding.btnGenerateQr.setOnClickListener {
-                startActivity(Intent(this, GenerateQrActivity::class.java))
-            }
+            // Eliminar este listener
+            // binding.btnGenerateQr.setOnClickListener {
+            //     startActivity(Intent(this, GenerateQrActivity::class.java))
+            // }
 
             binding.btnViewAllAttendance.setOnClickListener {
                 val intent = Intent(this, ViewAttendanceActivity::class.java)

@@ -13,13 +13,15 @@ import com.example.asistenciaqr.data.model.User
 
 class TeacherListAdapter(
     private val onEditClick: (User) -> Unit,
-    private val onDeleteClick: (User) -> Unit
+    private val onDeleteClick: (User) -> Unit,
+    private val onGenerateQRClick: (User) -> Unit
 ) : ListAdapter<User, TeacherListAdapter.TeacherViewHolder>(TeacherDiffCallback()) {
 
     inner class TeacherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvName: TextView = itemView.findViewById(R.id.tvTeacherName)
         private val tvEmail: TextView = itemView.findViewById(R.id.tvTeacherEmail)
         private val tvStatus: TextView = itemView.findViewById(R.id.tvTeacherStatus)
+        private val btnGenerateQR: ImageButton = itemView.findViewById(R.id.btnGenerateQR)
         private val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit)
         private val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
 
@@ -32,11 +34,21 @@ class TeacherListAdapter(
             if (teacher.active) {
                 tvStatus.text = context.getString(R.string.status_active)
                 tvStatus.setBackgroundResource(R.drawable.bg_status_active)
+                btnGenerateQR.isEnabled = true
+                btnGenerateQR.alpha = 1.0f
             } else {
                 tvStatus.text = context.getString(R.string.status_inactive)
                 tvStatus.setBackgroundResource(R.drawable.bg_status_inactive)
+                btnGenerateQR.isEnabled = false
+                btnGenerateQR.alpha = 0.3f
             }
 
+            // Solo permitir generar QR para profesores activos
+            btnGenerateQR.setOnClickListener {
+                if (teacher.active) {
+                    onGenerateQRClick(teacher)
+                }
+            }
             btnEdit.setOnClickListener { onEditClick(teacher) }
             btnDelete.setOnClickListener { onDeleteClick(teacher) }
         }
@@ -52,7 +64,6 @@ class TeacherListAdapter(
         holder.bind(getItem(position))
     }
 
-    // Clase DiffUtil para comparar eficientemente las listas
     class TeacherDiffCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.uid == newItem.uid

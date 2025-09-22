@@ -140,16 +140,6 @@
                     app:iconPadding="8dp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnGenerateQr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:text="@string/generate_qr"
-                    app:icon="@drawable/ic_qr_code"
-                    app:iconGravity="start"
-                    app:iconPadding="8dp" />
-
-                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnViewAllAttendance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

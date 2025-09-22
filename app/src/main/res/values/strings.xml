@@ -15,6 +15,7 @@
     <string name="desc_ic_add">Icono de añadir</string>
     <string name="desc_ic_edit">Icono de editar</string>
     <string name="desc_ic_delete">Icono de eliminar</string>
+    <string name="desc_ic_qr">Icono de QR</string>
 
     <!-- Hints -->
     <string name="hint_email">Correo electrónico</string>

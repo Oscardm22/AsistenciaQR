@@ -36,9 +36,7 @@ class ManageTeachersActivity : AppCompatActivity() {
     }
 
     private fun setStatusBarColor() {
-        // Cambiar color
         window.statusBarColor = ContextCompat.getColor(this, R.color.purple_500)
-
         WindowCompat.getInsetsController(window, window.decorView).apply {
             isAppearanceLightStatusBars = false
         }
@@ -63,6 +61,9 @@ class ManageTeachersActivity : AppCompatActivity() {
             },
             onDeleteClick = { teacher ->
                 showDeleteConfirmation(teacher)
+            },
+            onGenerateQRClick = { teacher ->  // Nuevo callback
+                generateQRForTeacher(teacher)
             }
         )
 
@@ -100,8 +101,20 @@ class ManageTeachersActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun generateQRForTeacher(teacher: User) {
+        // Verificar que el profesor esté activo
+        if (!teacher.active) {
+            showError("No se puede generar QR para un profesor inactivo")
+            return
+        }
+
+        val intent = Intent(this, GenerateQrActivity::class.java).apply {
+            putExtra("teacher", teacher)
+        }
+        startActivity(intent)
+    }
+
     private fun showDeleteConfirmation(teacher: User) {
-        // No permitir eliminar administradores
         if (teacher.admin) {
             showError("No se puede eliminar un administrador")
             return
@@ -123,6 +136,6 @@ class ManageTeachersActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadTeachers() // Recargar datos al volver a la actividad
+        viewModel.loadTeachers()
     }
 }
