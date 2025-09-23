@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.asistenciaqr.R
 import com.example.asistenciaqr.data.model.User
 import com.example.asistenciaqr.databinding.ActivityEditTeacherBinding
 import com.example.asistenciaqr.presentation.viewmodel.TeacherViewModel
@@ -120,7 +121,7 @@ class EditTeacherActivity : AppCompatActivity() {
         } catch (e: Exception) {
             showError("Error al cargar la imagen: ${e.message}")
             // Mostrar placeholder si hay error
-            binding.ivPhotoPreview.setImageResource(com.example.asistenciaqr.R.drawable.ic_person)
+            binding.ivPhotoPreview.setImageResource(R.drawable.ic_person)
         }
     }
 
@@ -145,9 +146,9 @@ class EditTeacherActivity : AppCompatActivity() {
             updatePhotoButtonAppearance(isLoading)
 
             if (isLoading) {
-                binding.btnSave.text = getString(com.example.asistenciaqr.R.string.saving)
+                binding.btnSave.text = getString(R.string.saving)
             } else {
-                binding.btnSave.text = getString(com.example.asistenciaqr.R.string.save_changes)
+                binding.btnSave.text = getString(R.string.save_changes)
             }
         }
     }
@@ -164,7 +165,7 @@ class EditTeacherActivity : AppCompatActivity() {
     }
 
     private fun setStatusBarColor() {
-        window.statusBarColor = ContextCompat.getColor(this, com.example.asistenciaqr.R.color.purple_500)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.purple_500)
         WindowCompat.getInsetsController(window, window.decorView).apply {
             isAppearanceLightStatusBars = false
         }
@@ -202,13 +203,13 @@ class EditTeacherActivity : AppCompatActivity() {
     private fun showRemovePhotoDialog() {
         val builder = android.app.AlertDialog.Builder(
             this,
-            com.example.asistenciaqr.R.style.ThemeOverlay_AsistenciaQR_AlertDialog_Delete
+            R.style.ThemeOverlay_AsistenciaQR_AlertDialog_Delete
         )
 
         builder.setTitle("Eliminar foto")
             .setMessage("¿Quieres eliminar la foto seleccionada?")
             .setPositiveButton("Eliminar") { dialog, _ ->
-                binding.ivPhotoPreview.setImageResource(com.example.asistenciaqr.R.drawable.ic_person)
+                binding.ivPhotoPreview.setImageResource(R.drawable.ic_person)
                 photoBase64 = null
                 dialog.dismiss()
             }
@@ -244,9 +245,9 @@ class EditTeacherActivity : AppCompatActivity() {
 
     private fun startCropActivity(sourceUri: Uri) {
         val options = UCrop.Options()
-        options.setToolbarColor(ContextCompat.getColor(this, com.example.asistenciaqr.R.color.purple_500))
-        options.setStatusBarColor(ContextCompat.getColor(this, com.example.asistenciaqr.R.color.purple_700))
-        options.setToolbarWidgetColor(ContextCompat.getColor(this, com.example.asistenciaqr.R.color.white))
+        options.setToolbarColor(ContextCompat.getColor(this, R.color.purple_500))
+        options.setStatusBarColor(ContextCompat.getColor(this, R.color.purple_700))
+        options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.white))
 
         val destinationUri = Uri.fromFile(File(cacheDir, "cropped_${System.currentTimeMillis()}.jpg"))
 

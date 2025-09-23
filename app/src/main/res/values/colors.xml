@@ -12,7 +12,15 @@
     <color name="red_500">#F44336</color>
     <color name="red_600">#FFD32F2F</color>
     <color name="gray">#FF9E9E9E</color>
+    <color name="gray_50">#FFFAFAFA</color>
+    <color name="gray_100">#FFF5F5F5</color>
+    <color name="gray_200">#FFEEEEEE</color>
+    <color name="gray_300">#FFE0E0E0</color>
     <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_500">#FF9E9E9E</color>
     <color name="gray_600">#FF757575</color>
+    <color name="gray_700">#FF616161</color>
+    <color name="gray_800">#FF424242</color>
+    <color name="gray_900">#FF212121</color>
     <color name="green_500">#4CAF50</color>
 </resources>
