@@ -6,7 +6,6 @@
     <string name="tvWelcome">Bienvenido</string>
     <string name="tvRole">Rol</string>
     <string name="admin_section">Administración</string>
-    <string name="teacher_full_name">%1$s %2$s</string>
     <string name="status_active">Activo</string>
     <string name="status_inactive">Inactivo</string>
 
@@ -59,6 +58,7 @@
 
     //Formatos
     <string name="welcome_message">Bienvenido, %s</string>
-
-
+    <string name="teacher_full_name">%1$s %2$s</string>
+    <string name="id_format">ID: %1$s</string>
+    <string name="generate_pdf_id_card">Generar Carnet PDF</string>
 </resources>

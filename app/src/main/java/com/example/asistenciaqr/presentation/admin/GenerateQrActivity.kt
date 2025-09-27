@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.pdf.PdfDocument
 import android.os.Bundle
@@ -27,6 +28,9 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.set
+import androidx.core.graphics.scale
 
 class GenerateQrActivity : AppCompatActivity() {
 
@@ -65,11 +69,11 @@ class GenerateQrActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        binding.tvTeacherName.text = "${teacher.names} ${teacher.lastnames}"
+        binding.tvTeacherName.text = getString(R.string.teacher_full_name, teacher.names, teacher.lastnames)
         binding.tvTeacherEmail.text = teacher.email
-        binding.tvTeacherId.text = "ID: ${teacher.uid.substring(0, 8).uppercase()}"
+        binding.tvTeacherId.text = getString(R.string.id_format, teacher.uid.substring(0, 8).uppercase())
 
-        binding.btnGeneratePdf.text = "Generar Carnet PDF"
+        binding.btnGeneratePdf.text = getString(R.string.generate_pdf_id_card)
         binding.btnSelectPhoto.visibility = android.view.View.GONE
         binding.btnSharePdf.visibility = android.view.View.GONE
     }
@@ -103,10 +107,10 @@ class GenerateQrActivity : AppCompatActivity() {
                 hints
             )
 
-            val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565)
+            val bitmap = createBitmap(size, size, Bitmap.Config.RGB_565)
             for (x in 0 until size) {
                 for (y in 0 until size) {
-                    bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+                    bitmap[x, y] = if (bitMatrix[x, y]) Color.BLACK else Color.WHITE
                 }
             }
             bitmap
@@ -164,12 +168,12 @@ class GenerateQrActivity : AppCompatActivity() {
         val newWidth = (width * scaleFactor).toInt()
         val newHeight = (height * scaleFactor).toInt()
 
-        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+        return bitmap.scale(newWidth, newHeight)
     }
 
     private fun createUserPhotoPlaceholder(): Bitmap {
         val size = 300
-        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(size, size)
         val canvas = Canvas(bitmap)
         val paint = Paint().apply { isAntiAlias = true }
 
@@ -185,7 +189,7 @@ class GenerateQrActivity : AppCompatActivity() {
     }
 
     private fun createErrorBitmap(size: Int): Bitmap {
-        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565)
+        val bitmap = createBitmap(size, size, Bitmap.Config.RGB_565)
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.RED)
         val paint = Paint().apply {
@@ -300,15 +304,15 @@ class GenerateQrActivity : AppCompatActivity() {
         paint.typeface = android.graphics.Typeface.DEFAULT_BOLD // Título en negrita
         canvas.drawText("DOCENTE", x + width / 2, y + height * 0.07f, paint)
 
-        // FOTO con más espacio superior
+        // FOTO CIRCULAR con más espacio superior
         userPhotoBitmap?.let { photoBitmap ->
-            val photoHeight = height * 0.5f
-            val photoWidth = photoHeight * (photoBitmap.width.toFloat() / photoBitmap.height.toFloat())
-            val photoX = x + (width - photoWidth) / 2
+            val photoDiameter = height * 0.5f // Diámetro del círculo
+            val photoX = x + (width - photoDiameter) / 2
             val photoY = y + height * 0.20f // MISMA POSICIÓN QUE EL QR (0.20f)
 
-            val scaledPhoto = Bitmap.createScaledBitmap(photoBitmap, photoWidth.toInt(), photoHeight.toInt(), true)
-            canvas.drawBitmap(scaledPhoto, photoX, photoY, paint)
+            // Crear un bitmap circular
+            val circularBitmap = getCircularBitmap(photoBitmap, photoDiameter.toInt())
+            canvas.drawBitmap(circularBitmap, photoX, photoY, paint)
         }
 
         // Información con texto MÁS GRANDE y NEGRITAS
@@ -328,7 +332,6 @@ class GenerateQrActivity : AppCompatActivity() {
 
         // Nombres con etiqueta en negrita
         val namesLabel = "Nombres: "
-        val fullNamesText = namesLabel + teacher.names
 
         // Medir ancho del texto para centrado preciso
         val namesLabelWidth = boldPaint.measureText(namesLabel)
@@ -358,7 +361,6 @@ class GenerateQrActivity : AppCompatActivity() {
 
         // Apellidos con etiqueta en negrita
         val lastnamesLabel = "Apellidos: "
-        val fullLastnamesText = lastnamesLabel + teacher.lastnames
 
         val lastnamesLabelWidth = boldPaint.measureText(lastnamesLabel)
         val lastnamesValueWidth = regularPaint.measureText(teacher.lastnames)
@@ -416,7 +418,7 @@ class GenerateQrActivity : AppCompatActivity() {
             val qrX = x + (width - qrSize) / 2
             val qrY = y + height * 0.20f // MISMA POSICIÓN QUE LA FOTO (0.20f)
 
-            val scaledQr = Bitmap.createScaledBitmap(bitmap, qrSize.toInt(), qrSize.toInt(), true)
+            val scaledQr = bitmap.scale(qrSize.toInt(), qrSize.toInt())
             canvas.drawBitmap(scaledQr, qrX, qrY, paint)
         }
 
@@ -433,6 +435,30 @@ class GenerateQrActivity : AppCompatActivity() {
             currentY,
             paint
         )
+    }
+
+    private fun getCircularBitmap(bitmap: Bitmap, diameter: Int): Bitmap {
+        // Escalar el bitmap al diámetro deseado
+        val scaledBitmap = bitmap.scale(diameter, diameter, false)
+
+        // Crear un bitmap circular
+        val output = createBitmap(diameter, diameter)
+        val canvas = Canvas(output)
+        val paint = Paint().apply {
+            isAntiAlias = true
+            color = Color.BLACK
+        }
+
+        // Dibujar un círculo y usar como máscara
+        val circlePath = Path().apply {
+            addCircle(diameter / 2f, diameter / 2f, diameter / 2f, Path.Direction.CW)
+        }
+
+        canvas.drawPath(circlePath, paint)
+        paint.xfermode = android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(scaledBitmap, 0f, 0f, paint)
+
+        return output
     }
 
     private fun splitTextIntoLines(text: String, maxWidth: Float, paint: Paint): List<String> {
