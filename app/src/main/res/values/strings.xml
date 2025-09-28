@@ -61,4 +61,8 @@
     <string name="teacher_full_name">%1$s %2$s</string>
     <string name="id_format">ID: %1$s</string>
     <string name="generate_pdf_id_card">Generar Carnet PDF</string>
+    <string name="issued_date_format">Emitido: %1$s</string>
+    <string name="email_format">Email: %1$s</string>
+    <string name="full_name_format">Nombre completo: %1$s %2$s</string>
+    <string name="carnet_full_name">%1$s %2$s</string>
 </resources>

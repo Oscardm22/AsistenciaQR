@@ -12,7 +12,6 @@ data class User(
     val lastnames: String = "",
     val admin: Boolean = false,
     val photoBase64: String? = null,
-    val qrCodeData: String? = null,
     val createdAt: Date = Date(),
     val active: Boolean = true
 ) : Parcelable

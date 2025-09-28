@@ -47,24 +47,6 @@ class UserRepositoryImpl : UserRepository {
         }
     }
 
-    override suspend fun generateQrForUser(userId: String): Result<String> {
-        return try {
-            val userResult = getUserById(userId)
-            if (userResult.isSuccess) {
-                val user = userResult.getOrThrow()
-                val qrData = "USER_${userId}_${System.currentTimeMillis()}"
-                val updatedUser = user.copy(qrCodeData = qrData)
-
-                usersCollection.document(userId).set(updatedUser).await()
-                Result.success(qrData)
-            } else {
-                Result.failure(userResult.exceptionOrNull() ?: Exception("Error al generar QR"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
     override suspend fun updateUser(user: User): Result<Boolean> {
         return try {
             usersCollection.document(user.uid).set(user).await()

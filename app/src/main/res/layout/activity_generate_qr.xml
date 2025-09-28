@@ -11,175 +11,275 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/purple_500"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="@color/white" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp">
+        android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Previsualización del Carnet"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Contenedor de DOS carnets (frontal y reverso) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="32dp">
+
+            <!-- Carnet FRONTAL (izquierda) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="145dp"
+                android:layout_height="238dp"
+                android:layout_marginEnd="20dp"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="@color/purple_500"
+                app:strokeWidth="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!-- Header frontal -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:background="@color/purple_500"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DOCENTE"
+                            android:textColor="@color/white"
+                            android:textSize="8sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!-- Foto circular -->
+                    <ImageView
+                        android:id="@+id/ivUserPhoto"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circular_background" />
+
+                    <!-- Información frontal - CON ETIQUETAS -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="8dp"
+                        android:gravity="center">
+
+                        <!-- Nombres con etiqueta -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nombres: "
+                                android:textColor="@color/black"
+                                android:textSize="6.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvCarnetNames"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NOMBRES"
+                                android:textColor="@color/black"
+                                android:textSize="6.5sp"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+                        </LinearLayout>
+
+                        <!-- Apellidos con etiqueta -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginTop="4dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Apellidos: "
+                                android:textColor="@color/black"
+                                android:textSize="6.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvCarnetLastnames"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="APELLIDOS"
+                                android:textColor="@color/black"
+                                android:textSize="6.5sp"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Carnet REVERSO (derecha) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="145dp"
+                android:layout_height="238dp"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="@color/purple_500"
+                app:strokeWidth="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!-- Header reverso -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:background="@color/purple_500"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="INFORMACIÓN"
+                            android:textColor="@color/white"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!-- QR Code -->
+                    <ImageView
+                        android:id="@+id/ivQrCode"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:background="@color/white"
+                        android:padding="2dp"
+                        android:contentDescription="Código QR del profesor" />
+
+                    <!-- Fecha de emisión -->
+                    <TextView
+                        android:id="@+id/tvIssueDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="40dp"
+                        android:text="Emitido: MM/AAAA"
+                        android:textColor="@color/black"
+                        android:textSize="6sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <!-- Información adicional del profesor - CORREGIDO -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginHorizontal="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:padding="16dp">
 
-            <!-- Información del profesor -->
-            <com.google.android.material.card.MaterialCardView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:id="@+id/tvTeacherName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Nombre del Profesor"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvTeacherEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="8dp"
-                        android:text="email@institucion.edu"
-                        android:textColor="@color/gray_600"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tvTeacherId"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="4dp"
-                        android:text="ID: XXXXXXXX"
-                        android:textColor="@color/gray_500"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Sección para la foto del carnet -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Foto para el Carnet"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- ImageView para mostrar la foto seleccionada -->
-                    <ImageView
-                        android:id="@+id/ivUserPhoto"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:scaleType="centerCrop"
-                        android:background="@drawable/circular_background"
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- Botón para seleccionar foto -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnSelectPhoto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Seleccionar Foto"
-                        app:icon="@drawable/ic_camera"
-                        app:iconGravity="start"
-                        app:iconPadding="8dp"
-                        style="@style/Widget.Material3.Button.OutlinedButton" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- QR Code Preview -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="24dp"
-                android:padding="20dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Código QR"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="16dp" />
-
-                    <ImageView
-                        android:id="@+id/ivQrCode"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:background="@color/white"
-                        android:padding="8dp" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Botones de acción -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGeneratePdf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="Generar Carnet PDF"
+                android:text="Información del Profesor"
+                android:textColor="@color/black"
                 android:textSize="16sp"
-                app:icon="@drawable/ic_picture_as_pdf"
-                app:iconGravity="start"
-                app:iconPadding="8dp" />
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSharePdf"
+            <TextView
+                android:id="@+id/tvTeacherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Compartir QR"
-                android:textSize="16sp"
-                app:icon="@drawable/ic_share"
-                app:iconGravity="start"
-                app:iconPadding="8dp"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
+                android:text="Nombre completo:"
+                android:textColor="@color/gray_700"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvTeacherEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Email:"
+                android:textColor="@color/gray_700"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvTeacherId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="ID:"
+                android:textColor="@color/gray_700"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Botón principal de acción -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGeneratePdf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="Generar Carnet PDF"
+        android:textSize="16sp"
+        app:icon="@drawable/ic_picture_as_pdf"
+        app:iconGravity="start"
+        app:iconPadding="8dp"
+        android:layout_marginBottom="16dp" />
 
 </LinearLayout>
+
+    </ScrollView>
+
+    </LinearLayout>

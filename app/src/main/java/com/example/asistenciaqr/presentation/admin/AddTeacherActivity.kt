@@ -256,7 +256,6 @@ class AddTeacherActivity : AppCompatActivity() {
             lastnames = lastnames,
             admin = isAdmin,
             photoBase64 = photoBase64,
-            qrCodeData = null,
             createdAt = Date(),
             active = isActive
         )

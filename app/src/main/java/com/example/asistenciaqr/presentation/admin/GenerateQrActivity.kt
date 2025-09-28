@@ -31,6 +31,7 @@ import java.util.Locale
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.set
 import androidx.core.graphics.scale
+import androidx.core.view.WindowCompat
 
 class GenerateQrActivity : AppCompatActivity() {
 
@@ -50,6 +51,8 @@ class GenerateQrActivity : AppCompatActivity() {
         setupListeners()
         loadPhotoFromBase64()
         generateQRCode()
+        displayQRPreview()
+        setStatusBarColor()
     }
 
     private fun setupToolbar() {
@@ -69,13 +72,19 @@ class GenerateQrActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        binding.tvTeacherName.text = getString(R.string.teacher_full_name, teacher.names, teacher.lastnames)
-        binding.tvTeacherEmail.text = teacher.email
+        // Previsualización del carnet FRONTAL - CON ETIQUETAS
+        binding.tvCarnetNames.text = teacher.names
+        binding.tvCarnetLastnames.text = teacher.lastnames
+
+        val currentDate = SimpleDateFormat("MM/yyyy", Locale.getDefault()).format(Date())
+        binding.tvIssueDate.text = getString(R.string.issued_date_format, currentDate)
+
+        // Información adicional
+        binding.tvTeacherName.text = getString(R.string.full_name_format, teacher.names, teacher.lastnames)
+        binding.tvTeacherEmail.text = getString(R.string.email_format, teacher.email)
         binding.tvTeacherId.text = getString(R.string.id_format, teacher.uid.substring(0, 8).uppercase())
 
         binding.btnGeneratePdf.text = getString(R.string.generate_pdf_id_card)
-        binding.btnSelectPhoto.visibility = android.view.View.GONE
-        binding.btnSharePdf.visibility = android.view.View.GONE
     }
 
     private fun setupListeners() {
@@ -88,9 +97,24 @@ class GenerateQrActivity : AppCompatActivity() {
         }
     }
 
+    private fun setStatusBarColor() {
+        window.statusBarColor = ContextCompat.getColor(this, R.color.purple_500)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = false
+        }
+    }
+
     private fun generateQRCode() {
         val qrData = "TEACHER:${teacher.uid}:${teacher.email}"
         qrBitmap = generateQRBitmap(qrData, 300)
+    }
+
+    private fun displayQRPreview() {
+        qrBitmap?.let { bitmap ->
+            binding.ivQrCode.setImageBitmap(bitmap)
+        } ?: run {
+            showError("No se pudo generar el código QR")
+        }
     }
 
     private fun generateQRBitmap(text: String, size: Int): Bitmap {
@@ -127,18 +151,23 @@ class GenerateQrActivity : AppCompatActivity() {
                 if (userPhotoBitmap != null) {
                     val targetSize = 800
                     userPhotoBitmap = scaleBitmapProportionally(userPhotoBitmap!!, targetSize)
-                    binding.ivUserPhoto.setImageBitmap(userPhotoBitmap)
+
+                    // Hacer la foto CIRCULAR para la previsualización
+                    val circularBitmap = getCircularBitmap(userPhotoBitmap!!, 300)
+                    binding.ivUserPhoto.setImageBitmap(circularBitmap)
                     showSuccess("Foto cargada desde base64")
                 } else {
                     userPhotoBitmap = createUserPhotoPlaceholder()
+                    binding.ivUserPhoto.setImageBitmap(userPhotoBitmap)
                 }
             } catch (e: Exception) {
                 userPhotoBitmap = createUserPhotoPlaceholder()
+                binding.ivUserPhoto.setImageBitmap(userPhotoBitmap)
             }
         } else {
             userPhotoBitmap = createUserPhotoPlaceholder()
+            binding.ivUserPhoto.setImageBitmap(userPhotoBitmap)
         }
-        binding.ivUserPhoto.setImageBitmap(userPhotoBitmap)
     }
 
     private fun decodeBase64ToBitmap(base64String: String): Bitmap? {
@@ -181,7 +210,7 @@ class GenerateQrActivity : AppCompatActivity() {
         canvas.drawCircle(size / 2f, size / 2f, size / 2f, paint)
 
         paint.color = Color.WHITE
-        paint.textSize = size / 2f
+        paint.textSize = size / 3f  // Reducir tamaño del emoji
         paint.textAlign = Paint.Align.CENTER
         canvas.drawText("👤", size / 2f, size / 1.7f, paint)
 
