@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AsistenciaQR"
         tools:targetApi="31">
+        <activity
+            android:name=".presentation.attendance.CustomCaptureActivity"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -24,10 +28,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:replace="android:theme" />
         <activity
             android:name=".presentation.admin.EditTeacherActivity"

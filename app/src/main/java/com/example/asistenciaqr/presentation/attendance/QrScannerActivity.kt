@@ -167,6 +167,7 @@ class QrScannerActivity : AppCompatActivity() {
             setBeepEnabled(true)
             setBarcodeImageEnabled(false)
             setOrientationLocked(true)
+            setCaptureActivity(CustomCaptureActivity::class.java)
         }
 
         qrScannerLauncher.launch(options)
