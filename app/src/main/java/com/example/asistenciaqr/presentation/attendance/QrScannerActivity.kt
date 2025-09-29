@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.asistenciaqr.R
 import com.example.asistenciaqr.data.model.AttendanceRecord
 import com.example.asistenciaqr.data.model.AttendanceType
 import com.example.asistenciaqr.data.model.User
@@ -54,12 +56,19 @@ class QrScannerActivity : AppCompatActivity() {
         binding = ActivityQrScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setStatusBarColor()
         setupViewModel()
         getCurrentUser()
         setupUI()
         checkPermissionsAndSetup()
     }
 
+    private fun setStatusBarColor() {
+        window.statusBarColor = ContextCompat.getColor(this, R.color.purple_500)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = false
+        }
+    }
     private fun setupViewModel() {
         val factory = AttendanceViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
