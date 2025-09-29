@@ -5,14 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.asistenciaqr.data.model.AttendanceRecord
+import com.example.asistenciaqr.domain.usecase.GetAllAttendanceUseCase
 import com.example.asistenciaqr.domain.usecase.GetAttendanceUseCase
+import com.example.asistenciaqr.domain.usecase.GetTodayAttendanceUseCase
 import com.example.asistenciaqr.domain.usecase.RegisterAttendanceUseCase
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 class AttendanceViewModel(
     private val registerAttendanceUseCase: RegisterAttendanceUseCase,
-    private val getAttendanceUseCase: GetAttendanceUseCase
+    private val getAttendanceUseCase: GetAttendanceUseCase,
+    private val getTodayAttendanceUseCase: GetTodayAttendanceUseCase,
+    private val getAllAttendanceUseCase: GetAllAttendanceUseCase
 ) : ViewModel() {
 
     private val _attendanceState = MutableLiveData<AttendanceState>()
@@ -40,7 +43,7 @@ class AttendanceViewModel(
             _attendanceListState.value = AttendanceListState.Loading
             val result = getAttendanceUseCase.execute(userId)
             if (result.isSuccess) {
-                _attendanceListState.value = AttendanceListState.Success(result.getOrNull()!!)
+                _attendanceListState.value = AttendanceListState.Success(result.getOrNull() ?: emptyList())
             } else {
                 _attendanceListState.value = AttendanceListState.Error(
                     result.exceptionOrNull()?.message ?: "Error al obtener asistencias"
@@ -52,19 +55,26 @@ class AttendanceViewModel(
     fun getTodayAttendanceByUser(userId: String) {
         viewModelScope.launch {
             _attendanceListState.value = AttendanceListState.Loading
-            val result = getAttendanceUseCase.execute(userId)
+            val result = getTodayAttendanceUseCase.execute(userId)
             if (result.isSuccess) {
-                val todayRecords = result.getOrNull()!!.filter { record ->
-                    val recordDate = Calendar.getInstance().apply { timeInMillis = record.timestamp }
-                    val today = Calendar.getInstance()
-                    recordDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                            recordDate.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
-                            recordDate.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)
-                }
-                _attendanceListState.value = AttendanceListState.Success(todayRecords)
+                _attendanceListState.value = AttendanceListState.Success(result.getOrNull() ?: emptyList())
             } else {
                 _attendanceListState.value = AttendanceListState.Error(
-                    result.exceptionOrNull()?.message ?: "Error al obtener asistencias"
+                    result.exceptionOrNull()?.message ?: "Error al obtener asistencias de hoy"
+                )
+            }
+        }
+    }
+
+    fun getAllAttendance() {
+        viewModelScope.launch {
+            _attendanceListState.value = AttendanceListState.Loading
+            val result = getAllAttendanceUseCase.execute()
+            if (result.isSuccess) {
+                _attendanceListState.value = AttendanceListState.Success(result.getOrNull() ?: emptyList())
+            } else {
+                _attendanceListState.value = AttendanceListState.Error(
+                    result.exceptionOrNull()?.message ?: "Error al obtener todas las asistencias"
                 )
             }
         }

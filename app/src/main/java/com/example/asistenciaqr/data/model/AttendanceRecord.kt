@@ -1,14 +1,36 @@
 package com.example.asistenciaqr.data.model
 
-import java.util.*
+import com.google.firebase.Timestamp
+
+enum class AttendanceType {
+    ENTRY,
+    EXIT,
+    BREAK,
+    RETURN
+}
 
 data class AttendanceRecord(
-    val id: String = UUID.randomUUID().toString(),
+    val id: String = "",
     val userId: String = "",
     val userNames: String = "",
     val userLastnames: String = "",
-    val type: String = "",
-    val timestamp: Long = System.currentTimeMillis(),
+    val type: AttendanceType = AttendanceType.ENTRY,
+    val timestamp: Timestamp = Timestamp.now(),
     val latitude: Double = 0.0,
-    val longitude: Double = 0.0
-)
+    val longitude: Double = 0.0,
+    val qrData: String = ""
+) {
+    fun getFormattedDate(): String {
+        val date = timestamp.toDate()
+        return android.text.format.DateFormat.format("dd/MM/yyyy HH:mm", date).toString()
+    }
+
+    fun getTypeInSpanish(): String {
+        return when (type) {
+            AttendanceType.ENTRY -> "Entrada"
+            AttendanceType.EXIT -> "Salida"
+            AttendanceType.BREAK -> "Descanso"
+            AttendanceType.RETURN -> "Regreso"
+        }
+    }
+}

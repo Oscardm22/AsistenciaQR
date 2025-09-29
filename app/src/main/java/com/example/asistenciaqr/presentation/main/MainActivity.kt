@@ -90,7 +90,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnScanQr.setOnClickListener {
-            startActivity(Intent(this, QrScannerActivity::class.java))
+            val intent = Intent(this, QrScannerActivity::class.java)
+            intent.putExtra("USER", currentUser)
+            startActivity(intent)
         }
 
         binding.btnViewMyAttendance.setOnClickListener {

@@ -3,6 +3,7 @@ package com.example.asistenciaqr.data.repository
 import com.example.asistenciaqr.data.model.AttendanceRecord
 import com.example.asistenciaqr.domain.repository.AttendanceRepository
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 
@@ -12,7 +13,14 @@ class AttendanceRepositoryImpl : AttendanceRepository {
 
     override suspend fun registerAttendance(record: AttendanceRecord): Result<Boolean> {
         return try {
-            attendanceCollection.document(record.id).set(record).await()
+            val document = if (record.id.isEmpty()) {
+                attendanceCollection.document() // Firebase genera ID
+            } else {
+                attendanceCollection.document(record.id)
+            }
+
+            val recordWithId = record.copy(id = document.id)
+            document.set(recordWithId).await()
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
@@ -23,6 +31,7 @@ class AttendanceRepositoryImpl : AttendanceRepository {
         return try {
             val records = attendanceCollection
                 .whereEqualTo("userId", userId)
+                .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .get()
                 .await()
                 .toObjects(AttendanceRecord::class.java)
@@ -36,6 +45,7 @@ class AttendanceRepositoryImpl : AttendanceRepository {
     override suspend fun getAllAttendance(): Result<List<AttendanceRecord>> {
         return try {
             val records = attendanceCollection
+                .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .get()
                 .await()
                 .toObjects(AttendanceRecord::class.java)
@@ -48,16 +58,19 @@ class AttendanceRepositoryImpl : AttendanceRepository {
 
     override suspend fun getTodayAttendanceByUser(userId: String): Result<List<AttendanceRecord>> {
         return try {
-            val startOfDay = Calendar.getInstance().apply {
+            val calendar = Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
-            }.timeInMillis
+            }
+
+            val startOfDay = Timestamp(calendar.time)
 
             val records = attendanceCollection
                 .whereEqualTo("userId", userId)
                 .whereGreaterThanOrEqualTo("timestamp", startOfDay)
+                .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .get()
                 .await()
                 .toObjects(AttendanceRecord::class.java)

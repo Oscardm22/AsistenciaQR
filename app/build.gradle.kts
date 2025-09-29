@@ -77,6 +77,7 @@ dependencies {
 
     // ZXing
     implementation(libs.zxing.core)
+    implementation (libs.journeyapps.qr)
 
     // Coroutines
     implementation (libs.kotlinx.coroutines.android)
