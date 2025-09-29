@@ -61,6 +61,7 @@ class QrScannerActivity : AppCompatActivity() {
         getCurrentUser()
         setupUI()
         checkPermissionsAndSetup()
+        setupToolbar()
     }
 
     private fun setStatusBarColor() {
@@ -69,6 +70,15 @@ class QrScannerActivity : AppCompatActivity() {
             isAppearanceLightStatusBars = false
         }
     }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = "Escanear QR de Asistencia"
+        binding.toolbar.setNavigationOnClickListener { finish() }
+    }
+
     private fun setupViewModel() {
         val factory = AttendanceViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
