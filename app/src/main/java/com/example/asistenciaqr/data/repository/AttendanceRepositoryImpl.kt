@@ -79,4 +79,23 @@ class AttendanceRepositoryImpl : AttendanceRepository {
             Result.failure(e)
         }
     }
+
+    override suspend fun getAttendanceByDateRange(
+        startDate: Timestamp,
+        endDate: Timestamp
+    ): Result<List<AttendanceRecord>> {
+        return try {
+            val snapshot = attendanceCollection
+                .whereGreaterThanOrEqualTo("timestamp", startDate)
+                .whereLessThanOrEqualTo("timestamp", endDate)
+                .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            val records = snapshot.toObjects(AttendanceRecord::class.java)
+            Result.success(records)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

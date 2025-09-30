@@ -15,12 +15,14 @@ class AttendanceViewModelFactory : ViewModelProvider.Factory {
             val getAttendanceUseCase = GetAttendanceUseCase(repository)
             val getTodayAttendanceUseCase = GetTodayAttendanceUseCase(repository)
             val getAllAttendanceUseCase = GetAllAttendanceUseCase(repository)
+            val getAttendanceByDateRangeUseCase = GetAttendanceByDateRangeUseCase(repository)
 
             return AttendanceViewModel(
                 registerAttendanceUseCase,
                 getAttendanceUseCase,
                 getTodayAttendanceUseCase,
-                getAllAttendanceUseCase
+                getAllAttendanceUseCase,
+                getAttendanceByDateRangeUseCase
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

@@ -6,16 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.asistenciaqr.data.model.AttendanceRecord
 import com.example.asistenciaqr.domain.usecase.GetAllAttendanceUseCase
+import com.example.asistenciaqr.domain.usecase.GetAttendanceByDateRangeUseCase
 import com.example.asistenciaqr.domain.usecase.GetAttendanceUseCase
 import com.example.asistenciaqr.domain.usecase.GetTodayAttendanceUseCase
 import com.example.asistenciaqr.domain.usecase.RegisterAttendanceUseCase
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.launch
 
 class AttendanceViewModel(
     private val registerAttendanceUseCase: RegisterAttendanceUseCase,
     private val getAttendanceUseCase: GetAttendanceUseCase,
     private val getTodayAttendanceUseCase: GetTodayAttendanceUseCase,
-    private val getAllAttendanceUseCase: GetAllAttendanceUseCase
+    private val getAllAttendanceUseCase: GetAllAttendanceUseCase,
+    private val getAttendanceByDateRangeUseCase: GetAttendanceByDateRangeUseCase
 ) : ViewModel() {
 
     private val _attendanceState = MutableLiveData<AttendanceState>()
@@ -78,6 +81,24 @@ class AttendanceViewModel(
                 )
             }
         }
+    }
+
+    fun getAttendanceByDateRange(startDate: Timestamp, endDate: Timestamp) {
+        viewModelScope.launch {
+            _attendanceListState.value = AttendanceListState.Loading
+            val result = getAttendanceByDateRangeUseCase.execute(startDate, endDate)
+            if (result.isSuccess) {
+                _attendanceListState.value = AttendanceListState.Success(result.getOrNull() ?: emptyList())
+            } else {
+                _attendanceListState.value = AttendanceListState.Error(
+                    result.exceptionOrNull()?.message ?: "Error al filtrar asistencias"
+                )
+            }
+        }
+    }
+
+    fun resetToAllAttendance() {
+        getAllAttendance()
     }
 }
 
