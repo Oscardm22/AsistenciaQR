@@ -31,7 +31,6 @@ class AttendanceRepositoryImpl : AttendanceRepository {
         return try {
             val records = attendanceCollection
                 .whereEqualTo("userId", userId)
-                .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .get()
                 .await()
                 .toObjects(AttendanceRecord::class.java)
