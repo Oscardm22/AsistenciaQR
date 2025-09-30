@@ -43,14 +43,20 @@ class AttendanceAdapter(
 
             binding.tvDateTime.text = record.getFormattedDate()
             binding.tvType.text = record.getTypeInSpanish()
-            binding.tvLocation.text = "Lat: ${String.format("%.4f", record.latitude)}, Lng: ${String.format("%.4f", record.longitude)}"
+
+            // MOSTRAR DIRECCIÓN EN LUGAR DE COORDENADAS
+            binding.tvLocation.text = if (record.locationAddress.isNotEmpty()) {
+                record.locationAddress
+            } else {
+                // Fallback a coordenadas si no hay dirección
+                "Lat: ${String.format("%.4f", record.latitude)}, Lng: ${String.format("%.4f", record.longitude)}"
+            }
 
             // Color diferente según el tipo de registro
             val context = binding.root.context
             val typeColor = when (record.type) {
                 com.example.asistenciaqr.data.model.AttendanceType.ENTRY -> R.color.green_600
                 com.example.asistenciaqr.data.model.AttendanceType.EXIT -> R.color.red_600
-                else -> R.color.purple_500
             }
             binding.tvType.setBackgroundColor(ContextCompat.getColor(context, typeColor))
         }

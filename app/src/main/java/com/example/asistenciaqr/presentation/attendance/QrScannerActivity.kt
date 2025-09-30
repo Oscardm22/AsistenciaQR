@@ -17,10 +17,14 @@ import com.example.asistenciaqr.data.model.User
 import com.example.asistenciaqr.databinding.ActivityQrScannerBinding
 import com.example.asistenciaqr.presentation.viewmodel.AttendanceViewModel
 import com.example.asistenciaqr.util.AttendanceViewModelFactory
+import com.example.asistenciaqr.util.LocationHelper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class QrScannerActivity : AppCompatActivity() {
@@ -28,6 +32,7 @@ class QrScannerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQrScannerBinding
     private lateinit var viewModel: AttendanceViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationHelper: LocationHelper
     private var currentUser: User? = null
     private var currentLocation: Location? = null
 
@@ -63,6 +68,7 @@ class QrScannerActivity : AppCompatActivity() {
         setupUI()
         checkPermissionsAndSetup()
         setupToolbar()
+        locationHelper = LocationHelper(this)
     }
 
     private fun setStatusBarColor() {
@@ -206,19 +212,36 @@ class QrScannerActivity : AppCompatActivity() {
 
         val attendanceType = determineAttendanceType(user.uid)
 
-        // Crear registro de asistencia
-        val attendanceRecord = AttendanceRecord(
-            userId = user.uid,
-            userNames = user.names,
-            userLastnames = user.lastnames,
-            type = attendanceType,
-            latitude = location.latitude,
-            longitude = location.longitude,
-            qrData = qrData
-        )
+        // OBTENER DIRECCIÓN DETALLADA
+        CoroutineScope(Dispatchers.Main).launch {
+            showLoading(true)
+            try {
+                // Usar la versión detallada en lugar de la básica
+                val address = locationHelper.getDetailedAddressFromLocation(
+                    location.latitude,
+                    location.longitude
+                )
 
-        // Registrar asistencia
-        viewModel.registerAttendance(attendanceRecord)
+                // Crear registro de asistencia CON DIRECCIÓN DETALLADA
+                val attendanceRecord = AttendanceRecord(
+                    userId = user.uid,
+                    userNames = user.names,
+                    userLastnames = user.lastnames,
+                    type = attendanceType,
+                    latitude = location.latitude,
+                    longitude = location.longitude,
+                    locationAddress = address,
+                    qrData = qrData
+                )
+
+                // Registrar asistencia
+                viewModel.registerAttendance(attendanceRecord)
+
+            } catch (e: Exception) {
+                showError("Error obteniendo dirección: ${e.message}")
+                showLoading(false)
+            }
+        }
     }
 
     private fun determineAttendanceType(userId: String): AttendanceType {
@@ -233,8 +256,6 @@ class QrScannerActivity : AppCompatActivity() {
     }
 
     private fun isValidUserQr(qrData: String, user: User): Boolean {
-        // El QR debería contener algo como: "TEACHER:${user.uid}:${user.email}"
-        // Como vimos en GenerateQrActivity
         return qrData.contains(user.uid) || qrData.contains(user.email)
     }
 

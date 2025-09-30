@@ -16,6 +16,7 @@ data class AttendanceRecord(
     val timestamp: Timestamp = Timestamp.now(),
     val latitude: Double = 0.0,
     val longitude: Double = 0.0,
+    val locationAddress: String = "",
     val qrData: String = ""
 ) {
     fun getFormattedDate(): String {
