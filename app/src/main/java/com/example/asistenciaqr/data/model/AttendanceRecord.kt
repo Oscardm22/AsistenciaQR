@@ -5,8 +5,6 @@ import com.google.firebase.Timestamp
 enum class AttendanceType {
     ENTRY,
     EXIT,
-    BREAK,
-    RETURN
 }
 
 data class AttendanceRecord(
@@ -29,8 +27,6 @@ data class AttendanceRecord(
         return when (type) {
             AttendanceType.ENTRY -> "Entrada"
             AttendanceType.EXIT -> "Salida"
-            AttendanceType.BREAK -> "Descanso"
-            AttendanceType.RETURN -> "Regreso"
         }
     }
 }

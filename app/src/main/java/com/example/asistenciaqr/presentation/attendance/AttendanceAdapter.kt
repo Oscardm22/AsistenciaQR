@@ -50,8 +50,6 @@ class AttendanceAdapter(
             val typeColor = when (record.type) {
                 com.example.asistenciaqr.data.model.AttendanceType.ENTRY -> R.color.green_600
                 com.example.asistenciaqr.data.model.AttendanceType.EXIT -> R.color.red_600
-                com.example.asistenciaqr.data.model.AttendanceType.BREAK -> R.color.orange_600
-                com.example.asistenciaqr.data.model.AttendanceType.RETURN -> R.color.blue_600
                 else -> R.color.purple_500
             }
             binding.tvType.setBackgroundColor(ContextCompat.getColor(context, typeColor))

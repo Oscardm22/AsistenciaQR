@@ -21,6 +21,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import java.util.Calendar
 
 class QrScannerActivity : AppCompatActivity() {
 
@@ -203,12 +204,14 @@ class QrScannerActivity : AppCompatActivity() {
             return
         }
 
+        val attendanceType = determineAttendanceType(user.uid)
+
         // Crear registro de asistencia
         val attendanceRecord = AttendanceRecord(
             userId = user.uid,
             userNames = user.names,
             userLastnames = user.lastnames,
-            type = AttendanceType.ENTRY,
+            type = attendanceType,
             latitude = location.latitude,
             longitude = location.longitude,
             qrData = qrData
@@ -216,6 +219,17 @@ class QrScannerActivity : AppCompatActivity() {
 
         // Registrar asistencia
         viewModel.registerAttendance(attendanceRecord)
+    }
+
+    private fun determineAttendanceType(userId: String): AttendanceType {
+        // Lógica simple: Si es antes de las 12:00 PM, es ENTRY, después es EXIT
+        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
+        return if (currentHour < 12) {
+            AttendanceType.ENTRY
+        } else {
+            AttendanceType.EXIT
+        }
     }
 
     private fun isValidUserQr(qrData: String, user: User): Boolean {
