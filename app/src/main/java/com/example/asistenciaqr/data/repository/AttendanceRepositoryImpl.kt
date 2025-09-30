@@ -66,15 +66,19 @@ class AttendanceRepositoryImpl : AttendanceRepository {
 
             val startOfDay = Timestamp(calendar.time)
 
-            val records = attendanceCollection
+            // Obtener TODOS los registros del usuario y filtrar localmente
+            val allUserRecords = attendanceCollection
                 .whereEqualTo("userId", userId)
-                .whereGreaterThanOrEqualTo("timestamp", startOfDay)
-                .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .get()
                 .await()
                 .toObjects(AttendanceRecord::class.java)
 
-            Result.success(records)
+            // Filtrar por fecha localmente
+            val todayRecords = allUserRecords.filter { record ->
+                record.timestamp >= startOfDay
+            }.sortedByDescending { it.timestamp }
+
+            Result.success(todayRecords)
         } catch (e: Exception) {
             Result.failure(e)
         }

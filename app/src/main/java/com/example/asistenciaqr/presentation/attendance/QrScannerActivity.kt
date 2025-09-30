@@ -25,7 +25,6 @@ import com.journeyapps.barcodescanner.ScanOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 class QrScannerActivity : AppCompatActivity() {
 
@@ -35,6 +34,7 @@ class QrScannerActivity : AppCompatActivity() {
     private lateinit var locationHelper: LocationHelper
     private var currentUser: User? = null
     private var currentLocation: Location? = null
+    private var currentQrData: String? = null // Para guardar el QR data temporalmente
 
     // Contract para escanear QR
     private val qrScannerLauncher = registerForActivityResult(ScanContract()) { result ->
@@ -104,6 +104,23 @@ class QrScannerActivity : AppCompatActivity() {
                 is com.example.asistenciaqr.presentation.viewmodel.AttendanceState.Error -> {
                     showLoading(false)
                     showError(state.message)
+                }
+            }
+        }
+
+        // NUEVO: Observer para los registros del día
+        viewModel.attendanceListState.observe(this) { state ->
+            when (state) {
+                is com.example.asistenciaqr.presentation.viewmodel.AttendanceListState.Success -> {
+                    // Cuando obtenemos los registros, proceder a registrar la asistencia
+                    handleAttendanceRegistration(state.records)
+                }
+                is com.example.asistenciaqr.presentation.viewmodel.AttendanceListState.Error -> {
+                    showLoading(false)
+                    showError("Error al obtener registros: ${state.message}")
+                }
+                is com.example.asistenciaqr.presentation.viewmodel.AttendanceListState.Loading -> {
+                    showLoading(true)
                 }
             }
         }
@@ -204,25 +221,42 @@ class QrScannerActivity : AppCompatActivity() {
             return
         }
 
-        // Validar que el QR escaneado pertenezca al usuario actual
         if (!isValidUserQr(qrData, user)) {
             showError("El código QR no corresponde a tu usuario")
             return
         }
 
-        val attendanceType = determineAttendanceType(user.uid)
+        // Guardar el QR data para usarlo después
+        currentQrData = qrData
+        showLoading(true)
 
-        // OBTENER DIRECCIÓN DETALLADA
+        // PRIMERO: Obtener registros del día
+        viewModel.getTodayAttendanceByUser(user.uid)
+    }
+
+    private fun handleAttendanceRegistration(todayRecords: List<AttendanceRecord>) {
+        val user = currentUser
+        val location = currentLocation
+        val qrData = currentQrData
+
+        if (user == null || location == null || qrData == null) {
+            showError("Error: Datos incompletos")
+            showLoading(false)
+            return
+        }
+
         CoroutineScope(Dispatchers.Main).launch {
-            showLoading(true)
             try {
-                // Usar la versión detallada en lugar de la básica
+                // Determinar el tipo basado en los registros existentes
+                val attendanceType = determineAttendanceTypeBasedOnRecords(todayRecords)
+
+                // Obtener la dirección
                 val address = locationHelper.getDetailedAddressFromLocation(
                     location.latitude,
                     location.longitude
                 )
 
-                // Crear registro de asistencia CON DIRECCIÓN DETALLADA
+                // Crear y registrar el registro de asistencia
                 val attendanceRecord = AttendanceRecord(
                     userId = user.uid,
                     userNames = user.names,
@@ -234,24 +268,31 @@ class QrScannerActivity : AppCompatActivity() {
                     qrData = qrData
                 )
 
-                // Registrar asistencia
+                // Registrar la asistencia
                 viewModel.registerAttendance(attendanceRecord)
 
             } catch (e: Exception) {
-                showError("Error obteniendo dirección: ${e.message}")
+                showError("Error: ${e.message}")
                 showLoading(false)
             }
         }
     }
 
-    private fun determineAttendanceType(userId: String): AttendanceType {
-        // Lógica simple: Si es antes de las 12:00 PM, es ENTRY, después es EXIT
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    private fun determineAttendanceTypeBasedOnRecords(todayRecords: List<AttendanceRecord>): AttendanceType {
+        // Si no hay registros hoy → ENTRY (primera vez del día)
+        if (todayRecords.isEmpty()) {
+            return AttendanceType.ENTRY
+        }
 
-        return if (currentHour < 12) {
-            AttendanceType.ENTRY
-        } else {
-            AttendanceType.EXIT
+        // Obtener el último registro del día
+        val lastRecord = todayRecords.maxByOrNull { it.timestamp }
+
+        // Si el último registro fue ENTRY → ahora es EXIT
+        // Si el último registro fue EXIT → ahora es ENTRY (nuevo ciclo)
+        return when (lastRecord?.type) {
+            AttendanceType.ENTRY -> AttendanceType.EXIT
+            AttendanceType.EXIT -> AttendanceType.ENTRY
+            else -> AttendanceType.ENTRY // Por defecto
         }
     }
 
