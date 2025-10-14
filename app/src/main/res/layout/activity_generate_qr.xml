@@ -276,9 +276,10 @@
         app:icon="@drawable/ic_picture_as_pdf"
         app:iconGravity="start"
         app:iconPadding="8dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.AsistenciaQR.Button.Filled"/>
 
-</LinearLayout>
+    </LinearLayout>
 
     </ScrollView>
 

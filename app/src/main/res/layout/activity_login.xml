@@ -85,7 +85,8 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp"
+        style="@style/Widget.AsistenciaQR.Button.Filled"/>
 
     <TextView
         android:id="@+id/tvForgotPassword"
