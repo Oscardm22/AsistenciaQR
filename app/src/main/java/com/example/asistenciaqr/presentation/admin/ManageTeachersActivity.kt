@@ -62,7 +62,7 @@ class ManageTeachersActivity : AppCompatActivity() {
             onDeleteClick = { teacher ->
                 showDeleteConfirmation(teacher)
             },
-            onGenerateQRClick = { teacher ->  // Nuevo callback
+            onGenerateQRClick = { teacher ->
                 generateQRForTeacher(teacher)
             }
         )

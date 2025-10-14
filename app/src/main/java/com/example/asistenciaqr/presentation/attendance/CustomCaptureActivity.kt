@@ -5,5 +5,4 @@ import com.journeyapps.barcodescanner.CaptureActivity
 
 class CustomCaptureActivity : CaptureActivity() {
     // Esta actividad forzará el portrait
-    // La clase base CaptureActivity maneja el escaneo
 }

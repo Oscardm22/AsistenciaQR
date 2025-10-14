@@ -141,12 +141,11 @@ class AddTeacherActivity : AppCompatActivity() {
     }
 
     private fun showRemovePhotoDialog() {
-        val builder = android.app.AlertDialog.Builder(
+        androidx.appcompat.app.AlertDialog.Builder(
             this,
             R.style.ThemeOverlay_AsistenciaQR_AlertDialog_Delete
         )
-
-        builder.setTitle("Eliminar foto")
+            .setTitle("Eliminar foto")
             .setMessage("¿Quieres eliminar la foto seleccionada?")
             .setPositiveButton("Eliminar") { dialog, _ ->
                 binding.ivPhotoPreview.setImageDrawable(null)
