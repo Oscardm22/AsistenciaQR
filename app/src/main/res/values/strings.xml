@@ -65,4 +65,6 @@
     <string name="email_format">Email: %1$s</string>
     <string name="full_name_format">Nombre completo: %1$s %2$s</string>
     <string name="carnet_full_name">%1$s %2$s</string>
+    <string name="full_name_format_asistencia">%1$s %2$s</string>
+    <string name="coordinates_format">Lat: %1$.4f, Lng: %2$.4f</string>
 </resources>

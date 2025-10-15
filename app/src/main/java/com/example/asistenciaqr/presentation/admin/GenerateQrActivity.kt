@@ -121,7 +121,7 @@ class GenerateQrActivity : AppCompatActivity() {
         return try {
             // Configurar para generar QR sin márgenes
             val hints = mutableMapOf<EncodeHintType, Any>()
-            hints[EncodeHintType.MARGIN] = 0 // Sin márgenes
+            hints[EncodeHintType.MARGIN] = 0
 
             val bitMatrix: BitMatrix = MultiFormatWriter().encode(
                 text,
@@ -273,10 +273,10 @@ class GenerateQrActivity : AppCompatActivity() {
         // Fondo blanco
         canvas.drawColor(Color.WHITE)
 
-        // REDUCIR margen entre carnets (más juntos)
-        val margin = 20f // Antes era 72f
+        // REDUCIR margen entre carnets
+        val margin = 20f
 
-        // Calcular posición - más centrados y juntos
+        // Calcular posición
         val totalWidth = cardWidth * 2 + margin
         val startX = (pageWidth - totalWidth) / 2f
         val startY = (pageHeight - cardHeight) / 2f
@@ -287,7 +287,7 @@ class GenerateQrActivity : AppCompatActivity() {
         // Carnet REVERSO (derecha) con bordes redondeados
         drawCarnetBack(canvas, startX + cardWidth + margin, startY, cardWidth, cardHeight, cornerRadius, paint)
 
-        // Instrucciones de corte para doblar (no recortar separado)
+        // Instrucciones de corte para doblar
         paint.color = Color.LTGRAY
         paint.textSize = 8f
         paint.textAlign = Paint.Align.CENTER
@@ -315,9 +315,9 @@ class GenerateQrActivity : AppCompatActivity() {
         canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
         paint.style = Paint.Style.FILL
 
-        // Header con bordes redondeados superiores (más pequeño)
+        // Header con bordes redondeados superiores
         paint.color = ContextCompat.getColor(this, R.color.purple_500)
-        val headerRect = RectF(x, y, x + width, y + height * 0.12f) // Reducido de 0.15f a 0.12f
+        val headerRect = RectF(x, y, x + width, y + height * 0.12f)
         canvas.drawRoundRect(
             RectF(headerRect.left, headerRect.top, headerRect.right, headerRect.bottom + cornerRadius),
             cornerRadius,
@@ -327,38 +327,38 @@ class GenerateQrActivity : AppCompatActivity() {
 
         // Título MÁS GRANDE
         paint.color = Color.WHITE
-        paint.textSize = 8f // Aumentado de 7f a 8f
+        paint.textSize = 8f
         paint.textAlign = Paint.Align.CENTER
-        paint.typeface = android.graphics.Typeface.DEFAULT_BOLD // Título en negrita
+        paint.typeface = android.graphics.Typeface.DEFAULT_BOLD
         canvas.drawText("DOCENTE", x + width / 2, y + height * 0.07f, paint)
 
         // FOTO CIRCULAR con más espacio superior
         userPhotoBitmap?.let { photoBitmap ->
             val photoDiameter = height * 0.5f // Diámetro del círculo
             val photoX = x + (width - photoDiameter) / 2
-            val photoY = y + height * 0.20f // MISMA POSICIÓN QUE EL QR (0.20f)
+            val photoY = y + height * 0.20f // MISMA POSICIÓN QUE EL QR
 
             // Crear un bitmap circular
             val circularBitmap = getCircularBitmap(photoBitmap, photoDiameter.toInt())
             canvas.drawBitmap(circularBitmap, photoX, photoY, paint)
         }
 
-        // Información con texto MÁS GRANDE y NEGRITAS
+        // Información con texto
         paint.color = Color.BLACK
-        paint.textSize = 6.5f // Aumentado de 5.5f a 6.5f
+        paint.textSize = 6.5f
         paint.textAlign = Paint.Align.CENTER
 
         var currentY = y + height * 0.78f
 
-        // NOMBRES Y APELLIDOS CON ETIQUETAS EN NEGRITA
+        // NOMBRES Y APELLIDOS
         val boldPaint = Paint(paint).apply {
-            typeface = android.graphics.Typeface.DEFAULT_BOLD // NEGRITA
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
         }
         val regularPaint = Paint(paint).apply {
-            typeface = android.graphics.Typeface.DEFAULT // NORMAL
+            typeface = android.graphics.Typeface.DEFAULT
         }
 
-        // Nombres con etiqueta en negrita
+        // Nombres
         val namesLabel = "Nombres: "
 
         // Medir ancho del texto para centrado preciso
@@ -372,9 +372,8 @@ class GenerateQrActivity : AppCompatActivity() {
 
             canvas.drawText(namesLabel, startX + namesLabelWidth / 2, currentY, boldPaint)
             canvas.drawText(teacher.names, startX + namesLabelWidth + namesValueWidth / 2, currentY, regularPaint)
-            currentY += 7f // Aumentado de 6f a 7f
+            currentY += 7f
         } else {
-            // Múltiples líneas
             canvas.drawText(namesLabel, x + width / 2, currentY, boldPaint)
             currentY += 7f
 
@@ -423,9 +422,9 @@ class GenerateQrActivity : AppCompatActivity() {
         canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
         paint.style = Paint.Style.FILL
 
-        // Header redondeado (más pequeño)
+        // Header redondeado
         paint.color = ContextCompat.getColor(this, R.color.purple_500)
-        val headerRect = RectF(x, y, x + width, y + height * 0.10f) // Reducido de 0.12f a 0.10f
+        val headerRect = RectF(x, y, x + width, y + height * 0.10f)
         canvas.drawRoundRect(
             RectF(headerRect.left, headerRect.top, headerRect.right, headerRect.bottom + cornerRadius),
             cornerRadius,
@@ -435,7 +434,7 @@ class GenerateQrActivity : AppCompatActivity() {
 
         // Título reverso MÁS GRANDE
         paint.color = Color.WHITE
-        paint.textSize = 7f // Aumentado de 6f a 7f
+        paint.textSize = 7f
         paint.textAlign = Paint.Align.CENTER
         paint.typeface = android.graphics.Typeface.DEFAULT_BOLD // Título en negrita
         canvas.drawText("INFORMACIÓN", x + width / 2, y + height * 0.06f, paint)
@@ -452,7 +451,7 @@ class GenerateQrActivity : AppCompatActivity() {
 
         // FECHA MÁS GRANDE
         paint.color = Color.BLACK
-        paint.textSize = 6f // Aumentado de 5f a 6f
+        paint.textSize = 6f
         paint.textAlign = Paint.Align.CENTER
         paint.typeface = android.graphics.Typeface.DEFAULT_BOLD // Fecha en negrita
 

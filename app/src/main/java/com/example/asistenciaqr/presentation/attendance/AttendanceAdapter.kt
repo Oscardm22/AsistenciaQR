@@ -34,26 +34,32 @@ class AttendanceAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(record: AttendanceRecord) {
+            val context = binding.root.context
+
             if (showUserNames) {
                 binding.tvUserName.visibility = android.view.View.VISIBLE
-                binding.tvUserName.text = "${record.userNames} ${record.userLastnames}"
+                binding.tvUserName.text = context.getString(
+                    R.string.full_name_format_asistencia,
+                    record.userNames,
+                    record.userLastnames
+                )
             } else {
                 binding.tvUserName.visibility = android.view.View.GONE
             }
 
             binding.tvDateTime.text = record.getFormattedDate()
             binding.tvType.text = record.getTypeInSpanish()
-
-            // MOSTRAR DIRECCIÓN EN LUGAR DE COORDENADAS
             binding.tvLocation.text = if (record.locationAddress.isNotEmpty()) {
                 record.locationAddress
             } else {
-                // Fallback a coordenadas si no hay dirección
-                "Lat: ${String.format("%.4f", record.latitude)}, Lng: ${String.format("%.4f", record.longitude)}"
+                context.getString(
+                    R.string.coordinates_format,
+                    record.latitude,
+                    record.longitude
+                )
             }
 
-            // Color diferente según el tipo de registro
-            val context = binding.root.context
+            // Color según el tipo de registro
             val typeColor = when (record.type) {
                 com.example.asistenciaqr.data.model.AttendanceType.ENTRY -> R.color.green_600
                 com.example.asistenciaqr.data.model.AttendanceType.EXIT -> R.color.red_600
