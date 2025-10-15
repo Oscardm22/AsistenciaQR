@@ -28,13 +28,9 @@ class TeacherViewModel(
     val error: LiveData<String> = _error
 
     private val _updateSuccess = MutableLiveData<Boolean>()
-    val updateSuccess: LiveData<Boolean> = _updateSuccess
 
     private val _updateCompleted = MutableLiveData<Boolean>()
     val updateCompleted: LiveData<Boolean> = _updateCompleted
-
-    private val _deleteSuccess = MutableLiveData<Boolean>()
-    val deleteSuccess: LiveData<Boolean> = _deleteSuccess
 
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.asistenciaqr.data.model.AttendanceRecord
-import com.example.asistenciaqr.data.model.AttendanceType
 import com.example.asistenciaqr.domain.usecase.GetAllAttendanceUseCase
 import com.example.asistenciaqr.domain.usecase.GetAttendanceByDateRangeUseCase
 import com.example.asistenciaqr.domain.usecase.GetAttendanceUseCase
@@ -100,27 +99,6 @@ class AttendanceViewModel(
 
     fun resetToAllAttendance() {
         getAllAttendance()
-    }
-
-    fun determineAttendanceType(userId: String): AttendanceType {
-        val todayRecords = getTodayRecordsFromCache(userId)
-
-        return if (todayRecords.isEmpty()) {
-            AttendanceType.ENTRY
-        } else {
-            val lastRecord = todayRecords.maxByOrNull { it.timestamp }
-            when (lastRecord?.type) {
-                AttendanceType.ENTRY -> AttendanceType.EXIT
-                AttendanceType.EXIT -> AttendanceType.ENTRY
-                else -> AttendanceType.ENTRY
-            }
-        }
-    }
-
-    private fun getTodayRecordsFromCache(userId: String): List<AttendanceRecord> {
-        // En una implementación real, esto vendría de una caché local o BD
-        // Por ahora retornamos lista vacía - lo implementaremos después
-        return emptyList()
     }
 }
 
