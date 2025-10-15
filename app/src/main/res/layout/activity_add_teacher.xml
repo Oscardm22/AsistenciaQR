@@ -51,7 +51,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Nombres"
                     android:inputType="textPersonName"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnSurface" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +75,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Apellidos"
                     android:inputType="textPersonName"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnSurface" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +99,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Correo electrónico"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnSurface" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,7 +125,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Contraseña"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnSurface" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,7 +151,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Confirmar Contraseña"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnSurface" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

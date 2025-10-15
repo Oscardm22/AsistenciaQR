@@ -81,7 +81,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Nombres"
                     android:inputType="textPersonName"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnSurface" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,7 +105,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Apellidos"
                     android:inputType="textPersonName"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnSurface" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
