@@ -123,4 +123,15 @@
     <style name="Widget.AsistenciaQR.DialogButton.Positive.Delete" parent="Widget.AsistenciaQR.DialogButton.Positive">
         <item name="android:textColor">@color/red_500</item>
     </style>
+
+    <style name="LightDatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="materialCalendarStyle">@style/CustomCalendarStyle</item>
+    </style>
+
+    <style name="CustomCalendarStyle" parent="Widget.MaterialComponents.MaterialCalendar">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:colorAccent">@color/purple_500</item>
+    </style>
+
 </resources>

@@ -1,6 +1,6 @@
 package com.example.asistenciaqr.presentation.attendance
 
-import android.app.DatePickerDialog
+import com.google.android.material.datepicker.MaterialDatePicker
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -107,31 +107,59 @@ class ViewAttendanceActivity : AppCompatActivity() {
     }
 
     private fun showDatePicker(isStartDate: Boolean) {
-        val datePicker = DatePickerDialog(
-            this,
-            { _, year, month, dayOfMonth ->
-                val selectedDate = Calendar.getInstance().apply {
-                    set(Calendar.YEAR, year)
-                    set(Calendar.MONTH, month)
-                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    set(Calendar.HOUR_OF_DAY, if (isStartDate) 0 else 23)
-                    set(Calendar.MINUTE, if (isStartDate) 0 else 59)
-                    set(Calendar.SECOND, if (isStartDate) 0 else 59)
-                }.time
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(if (isStartDate) "Seleccionar fecha inicio" else "Seleccionar fecha fin")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .setTheme(R.style.LightDatePicker)
+            .build()
 
-                if (isStartDate) {
-                    startDate = selectedDate
-                    binding.btnStartDate.text = formatDate(selectedDate)
-                } else {
-                    endDate = selectedDate
-                    binding.btnEndDate.text = formatDate(selectedDate)
-                }
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePicker.show()
+        datePicker.addOnPositiveButtonClickListener { selection ->
+            // MaterialDatePicker devuelve la fecha en UTC, necesitamos convertirla a la zona horaria local
+            val timeZone = TimeZone.getDefault()
+            val offset = timeZone.getOffset(selection)
+
+            // Crear calendario en UTC para obtener solo la fecha sin hora
+            val utcCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+            utcCalendar.timeInMillis = selection
+
+            // Extraer año, mes y día en UTC
+            val year = utcCalendar.get(Calendar.YEAR)
+            val month = utcCalendar.get(Calendar.MONTH)
+            val day = utcCalendar.get(Calendar.DAY_OF_MONTH)
+
+            // Crear calendario local con la fecha UTC pero en zona horaria local
+            val localCalendar = Calendar.getInstance()
+            localCalendar.set(Calendar.YEAR, year)
+            localCalendar.set(Calendar.MONTH, month)
+            localCalendar.set(Calendar.DAY_OF_MONTH, day)
+
+            // Ajustes de hora según tipo de fecha
+            if (isStartDate) {
+                localCalendar.set(Calendar.HOUR_OF_DAY, 0)
+                localCalendar.set(Calendar.MINUTE, 0)
+                localCalendar.set(Calendar.SECOND, 0)
+                localCalendar.set(Calendar.MILLISECOND, 0)
+            } else {
+                localCalendar.set(Calendar.HOUR_OF_DAY, 23)
+                localCalendar.set(Calendar.MINUTE, 59)
+                localCalendar.set(Calendar.SECOND, 59)
+                localCalendar.set(Calendar.MILLISECOND, 999)
+            }
+
+            val selectedDate = localCalendar.time
+
+            if (isStartDate) {
+                startDate = selectedDate
+                binding.btnStartDate.text = formatDate(selectedDate)
+            } else {
+                endDate = selectedDate
+                binding.btnEndDate.text = formatDate(selectedDate)
+            }
+
+            println("Fecha seleccionada: ${formatDate(selectedDate)}")
+            println("Timestamp: ${selectedDate.time}")
+        }
+        datePicker.show(supportFragmentManager, "DATE_PICKER")
     }
 
     private fun applyDateFilter() {
