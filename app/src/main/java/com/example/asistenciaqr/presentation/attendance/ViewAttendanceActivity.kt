@@ -26,7 +26,6 @@ class ViewAttendanceActivity : AppCompatActivity() {
     private var userName: String? = null
     private var startDate: Date? = null
     private var endDate: Date? = null
-    private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +54,10 @@ class ViewAttendanceActivity : AppCompatActivity() {
         userName = intent.getStringExtra("USER_NAME")
 
         if (showAll) {
-            binding.toolbar.title = "Todas las Asistencias"
+            binding.toolbar.title = getString(R.string.all_attendance)
             binding.fabFilter.visibility = android.view.View.VISIBLE
         } else {
-            binding.toolbar.title = "Mis Asistencias"
+            binding.toolbar.title = getString(R.string.my_attendance)
             userName?.let {
                 binding.toolbar.subtitle = it
             }
@@ -107,17 +106,19 @@ class ViewAttendanceActivity : AppCompatActivity() {
     }
 
     private fun showDatePicker(isStartDate: Boolean) {
+        val title = if (isStartDate) {
+            getString(R.string.select_start_date)
+        } else {
+            getString(R.string.select_end_date)
+        }
+
         val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(if (isStartDate) "Seleccionar fecha inicio" else "Seleccionar fecha fin")
+            .setTitleText(title)
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .setTheme(R.style.LightDatePicker)
             .build()
 
         datePicker.addOnPositiveButtonClickListener { selection ->
-            // MaterialDatePicker devuelve la fecha en UTC, necesitamos convertirla a la zona horaria local
-            val timeZone = TimeZone.getDefault()
-            val offset = timeZone.getOffset(selection)
-
             // Crear calendario en UTC para obtener solo la fecha sin hora
             val utcCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
             utcCalendar.timeInMillis = selection
@@ -164,12 +165,12 @@ class ViewAttendanceActivity : AppCompatActivity() {
 
     private fun applyDateFilter() {
         if (startDate == null || endDate == null) {
-            showError("Selecciona ambas fechas para filtrar")
+            showError(getString(R.string.select_both_dates))
             return
         }
 
         if (startDate!!.after(endDate)) {
-            showError("La fecha inicio no puede ser mayor a la fecha fin")
+            showError(getString(R.string.invalid_date_range))
             return
         }
 
@@ -184,22 +185,27 @@ class ViewAttendanceActivity : AppCompatActivity() {
         binding.cardFilters.visibility = android.view.View.GONE
 
         // Actualizar título con rango de fechas
-        binding.toolbar.title = "Asistencias: ${formatDate(startDate!!)} - ${formatDate(endDate!!)}"
+        val dateRangeText = getString(
+            R.string.attendance_range,
+            formatDate(startDate!!),
+            formatDate(endDate!!)
+        )
+        binding.toolbar.title = dateRangeText
     }
 
     private fun clearDateFilter() {
         startDate = null
         endDate = null
-        binding.btnStartDate.text = "Fecha inicio"
-        binding.btnEndDate.text = "Fecha fin"
+        binding.btnStartDate.text = getString(R.string.start_date)
+        binding.btnEndDate.text = getString(R.string.end_date)
         binding.cardFilters.visibility = android.view.View.GONE
 
         // Restaurar título original y cargar todas las asistencias
         if (showAll) {
-            binding.toolbar.title = "Todas las Asistencias"
+            binding.toolbar.title = getString(R.string.all_attendance)
             viewModel.resetToAllAttendance()
         } else {
-            binding.toolbar.title = "Mis Asistencias"
+            binding.toolbar.title = getString(R.string.my_attendance)
             userId?.let { viewModel.getAttendanceByUser(it) }
         }
     }
@@ -240,7 +246,7 @@ class ViewAttendanceActivity : AppCompatActivity() {
             userId?.let {
                 viewModel.getAttendanceByUser(it)
             } ?: run {
-                showError("No se pudo identificar al usuario")
+                showError(getString(R.string.user_identification_error))
                 finish()
             }
         }
@@ -260,12 +266,12 @@ class ViewAttendanceActivity : AppCompatActivity() {
 
         val emptyText = if (showAll) {
             if (startDate != null && endDate != null) {
-                "No hay asistencias en el rango de fechas seleccionado"
+                getString(R.string.no_attendance_in_range)
             } else {
-                "No hay registros de asistencia"
+                getString(R.string.no_attendance_records)
             }
         } else {
-            "No tienes registros de asistencia"
+            getString(R.string.no_personal_attendance)
         }
         binding.tvEmptyState.text = emptyText
     }
