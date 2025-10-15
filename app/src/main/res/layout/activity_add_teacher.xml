@@ -190,7 +190,8 @@
                 app:icon="@drawable/ic_camera"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/switchActive" />
+                app:layout_constraintTop_toBottomOf="@id/switchActive"
+                style="@style/Widget.AsistenciaQR.Button.Filled"/>
 
             <!-- Vista previa de foto -->
             <ImageView
@@ -216,7 +217,8 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivPhotoPreview" />
+                app:layout_constraintTop_toBottomOf="@id/ivPhotoPreview"
+                style="@style/Widget.AsistenciaQR.Button.Filled"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
