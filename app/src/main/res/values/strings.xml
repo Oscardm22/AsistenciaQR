@@ -8,6 +8,13 @@
     <string name="admin_section">Administración</string>
     <string name="status_active">Activo</string>
     <string name="status_inactive">Inactivo</string>
+    <string name="scan_qr_attendance_title">Escanear QR de Asistencia</string>
+    <string name="scan_prompt">Escanea tu código QR de asistencia</string>
+    <string name="location_obtained">Ubicación obtenida</string>
+    <string name="waiting_location">Esperando ubicación…</string>
+    <string name="scan_cancelled">Escaneo cancelado</string>
+    <string name="attendance_registered_success">Asistencia registrada exitosamente</string>
+    <string name="location_permission_required">Se necesitan permisos de ubicación para registrar asistencia</string>
 
     <!-- Descripciones -->
     <string name="desc_ic_login">Icono en el login</string>
@@ -51,6 +58,16 @@
     <string name="error_invalid_credentials">Credenciales incorrectas. Verifica tu email y contraseña.</string>
     <string name="error_user_not_found">Usuario no encontrado. Verifica tu email o regístrate.</string>
     <string name="error_login_general">Error al iniciar sesión: %s</string>
+    <string name="error_getting_records">Error al obtener registros: %s</string>
+    <string name="error_getting_location">Error al obtener ubicación: %s</string>
+    <string name="error_general">Error: %s</string>
+    <string name="user_not_available">Error: Usuario no disponible</string>
+    <string name="location_not_available_error">Error: Ubicación no disponible</string>
+    <string name="invalid_qr_user">El código QR no corresponde a tu usuario</string>
+    <string name="incomplete_data">Error: Datos incompletos</string>
+    <string name="user_info_error">No se pudo obtener información del usuario</string>
+    <string name="location_not_available">Ubicación no disponible</string>
+    <string name="location_error">Error obteniendo ubicación</string>
 
     <!-- Mensajes de éxito -->
     <string name="login_success">Inicio de sesión exitoso</string>
@@ -67,4 +84,7 @@
     <string name="carnet_full_name">%1$s %2$s</string>
     <string name="full_name_format_asistencia">%1$s %2$s</string>
     <string name="coordinates_format">Lat: %1$.4f, Lng: %2$.4f</string>
+
+
+
 </resources>

@@ -41,7 +41,7 @@ class QrScannerActivity : AppCompatActivity() {
         if (result.contents != null) {
             handleQrResult(result.contents)
         } else {
-            showError("Escaneo cancelado")
+            showError(getString(R.string.scan_cancelled))
         }
     }
 
@@ -52,7 +52,7 @@ class QrScannerActivity : AppCompatActivity() {
         if (permissions.all { it.value }) {
             getCurrentLocation()
         } else {
-            showError("Se necesitan permisos de ubicación para registrar asistencia")
+            showError(getString(R.string.location_permission_required))
             finish()
         }
     }
@@ -82,7 +82,7 @@ class QrScannerActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = "Escanear QR de Asistencia"
+        supportActionBar?.title = getString(R.string.scan_qr_attendance_title)
         binding.toolbar.setNavigationOnClickListener { finish() }
     }
 
@@ -98,7 +98,7 @@ class QrScannerActivity : AppCompatActivity() {
                 }
                 is com.example.asistenciaqr.presentation.viewmodel.AttendanceState.Success -> {
                     showLoading(false)
-                    showSuccess("Asistencia registrada exitosamente")
+                    showSuccess(getString(R.string.attendance_registered_success))
                     finish()
                 }
                 is com.example.asistenciaqr.presentation.viewmodel.AttendanceState.Error -> {
@@ -117,7 +117,7 @@ class QrScannerActivity : AppCompatActivity() {
                 }
                 is com.example.asistenciaqr.presentation.viewmodel.AttendanceListState.Error -> {
                     showLoading(false)
-                    showError("Error al obtener registros: ${state.message}")
+                    showError(getString(R.string.error_getting_records, state.message))
                 }
                 is com.example.asistenciaqr.presentation.viewmodel.AttendanceListState.Loading -> {
                     showLoading(true)
@@ -135,7 +135,7 @@ class QrScannerActivity : AppCompatActivity() {
         }
 
         if (currentUser == null) {
-            showError("No se pudo obtener información del usuario")
+            showError(getString(R.string.user_info_error))
             finish()
         }
     }
@@ -174,29 +174,29 @@ class QrScannerActivity : AppCompatActivity() {
                 .addOnSuccessListener { location ->
                     currentLocation = location
                     if (location != null) {
-                        binding.tvLocationStatus.text = "Ubicación obtenida"
+                        binding.tvLocationStatus.text = getString(R.string.location_obtained)
                     } else {
-                        binding.tvLocationStatus.text = "Ubicación no disponible"
-                        showError("No se pudo obtener la ubicación actual")
+                        binding.tvLocationStatus.text = getString(R.string.location_not_available)
+                        showError(getString(R.string.location_not_available_error))
                     }
                 }
                 .addOnFailureListener { e ->
-                    binding.tvLocationStatus.text = "Error obteniendo ubicación"
-                    showError("Error al obtener ubicación: ${e.message}")
+                    binding.tvLocationStatus.text = getString(R.string.location_error)
+                    showError(getString(R.string.error_getting_location, e.message ?: "Error desconocido"))
                 }
         }
     }
 
     private fun launchQrScanner() {
         if (currentLocation == null) {
-            showError("Esperando ubicación...")
+            showError(getString(R.string.waiting_location))
             getCurrentLocation()
             return
         }
 
         val options = ScanOptions().apply {
             setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-            setPrompt("Escanea tu código QR de asistencia")
+            setPrompt(getString(R.string.scan_prompt))
             setCameraId(0)
             setBeepEnabled(true)
             setBarcodeImageEnabled(false)
@@ -212,17 +212,17 @@ class QrScannerActivity : AppCompatActivity() {
         val location = currentLocation
 
         if (user == null) {
-            showError("Error: Usuario no disponible")
+            showError(getString(R.string.user_not_available))
             return
         }
 
         if (location == null) {
-            showError("Error: Ubicación no disponible")
+            showError(getString(R.string.location_not_available_error))
             return
         }
 
         if (!isValidUserQr(qrData, user)) {
-            showError("El código QR no corresponde a tu usuario")
+            showError(getString(R.string.invalid_qr_user))
             return
         }
 
@@ -240,7 +240,7 @@ class QrScannerActivity : AppCompatActivity() {
         val qrData = currentQrData
 
         if (user == null || location == null || qrData == null) {
-            showError("Error: Datos incompletos")
+            showError(getString(R.string.incomplete_data))
             showLoading(false)
             return
         }
@@ -272,7 +272,7 @@ class QrScannerActivity : AppCompatActivity() {
                 viewModel.registerAttendance(attendanceRecord)
 
             } catch (e: Exception) {
-                showError("Error: ${e.message}")
+                showError(getString(R.string.error_general, e.message ?: "Error desconocido"))
                 showLoading(false)
             }
         }
