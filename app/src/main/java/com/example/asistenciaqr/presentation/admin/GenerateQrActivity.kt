@@ -155,7 +155,6 @@ class GenerateQrActivity : AppCompatActivity() {
                     // Hacer la foto CIRCULAR para la previsualización
                     val circularBitmap = getCircularBitmap(userPhotoBitmap!!, 300)
                     binding.ivUserPhoto.setImageBitmap(circularBitmap)
-                    showSuccess("Foto cargada desde base64")
                 } else {
                     userPhotoBitmap = createUserPhotoPlaceholder()
                     binding.ivUserPhoto.setImageBitmap(userPhotoBitmap)
