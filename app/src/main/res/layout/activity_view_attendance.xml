@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Filtrar por fecha"
+                android:text="@string/date_filter"
                 android:textColor="@color/purple_500"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    android:text="Fecha inicio"
+                    android:text="@string/start_date"
                     android:textSize="12sp"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    android:text="Fecha fin"
+                    android:text="@string/end_date"
                     android:textSize="12sp"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="4dp"
-                    android:text="Aplicar"
+                    android:text="@string/apply"
                     android:textSize="12sp"
                     style="@style/Widget.AsistenciaQR.Button.Filled"/>
 
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="4dp"
-                    android:text="Limpiar"
+                    android:text="@string/clear"
                     android:textSize="12sp"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="32dp"
-            android:text="No hay registros de asistencia"
+            android:text="@string/no_attendance_records"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:visibility="gone"
@@ -162,6 +162,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:contentDescription="@string/ic_filter"
         android:src="@drawable/ic_filter"
         app:backgroundTint="@color/purple_500"
         app:tint="@color/white" />

@@ -9,9 +9,9 @@
     <string name="status_active">Activo</string>
     <string name="status_inactive">Inactivo</string>
     <string name="scan_qr_attendance_title">Escanear QR de Asistencia</string>
-    <string name="scan_prompt">Escanea tu código QR de asistencia</string>
+    <string name="scan_prompt">Escanea tu código QR personal para registrar tu asistencia</string>
     <string name="location_obtained">Ubicación obtenida</string>
-    <string name="waiting_location">Esperando ubicación…</string>
+    <string name="waiting_location">Obteniendo ubicación…</string>
     <string name="scan_cancelled">Escaneo cancelado</string>
     <string name="attendance_registered_success">Asistencia registrada exitosamente</string>
     <string name="location_permission_required">Se necesitan permisos de ubicación para registrar asistencia</string>
@@ -19,8 +19,20 @@
     <string name="my_attendance">Mis Asistencias</string>
     <string name="select_start_date">Seleccionar fecha inicio</string>
     <string name="select_end_date">Seleccionar fecha fin</string>
-    <string name="start_date">Fecha inicio</string>
-    <string name="end_date">Fecha fin</string>
+    <string name="carnet_preview">Previsualización del Carnet</string>
+    <string name="DOCENTE">DOCENTE</string>
+    <string name="names_carnet_preview">Nombres: </string>
+    <string name="Apellidos_carnet_preview">Apellidos: </string>
+    <string name="INFORMACION">INFORMACIÓN</string>
+    <string name="Emitido">Emitido: MM/AAAA</string>
+    <string name="informacion_profesor" tools:ignore="Typos">Información del Profesor</string>
+    <string name="full_name_preview">Nombre completo: </string>
+    <string name="email_preview">Email: </string>
+    <string name="id_preview">ID: </string>
+    <string name="date">29/09/2025 14:30</string>
+    <string name="date_filter">Filtrar por fecha</string>
+    <string name="attendance_type">Tipo de asistencia</string>
+    <string name="ubicacion">Lat: -12.0464, Lng: -77.0428</string>
 
     <!-- Descripciones -->
     <string name="desc_ic_login">Icono en el login</string>
@@ -28,6 +40,9 @@
     <string name="desc_ic_edit">Icono de editar</string>
     <string name="desc_ic_delete">Icono de eliminar</string>
     <string name="desc_ic_qr">Icono de QR</string>
+    <string name="desc_preview">Vista previa de la foto</string>
+    <string name="desc_qr" tools:ignore="Typos">Código QR del profesor</string>
+    <string name="ic_filter">Icono de filtro</string>
 
     <!-- Hints -->
     <string name="hint_email">Correo electrónico</string>
@@ -42,7 +57,7 @@
     <string name="btn_forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="send">Enviar</string>
     <string name="cancel">Cancelar</string>
-    <string name="scan_qr">Escanear QR de Asistencia</string>
+    <string name="scan_qr">Escanear QR</string>
     <string name="view_my_attendance">Ver Mis Asistencias</string>
     <string name="manage_teachers">Gestionar Profesores</string>
     <string name="generate_qr">Generar QR para Profesores</string>
@@ -51,6 +66,15 @@
     <string name="saving">Guardando…</string>
     <string name="save_user">Guardar Usuario</string>
     <string name="save_changes">Guardar Cambios</string>
+    <string name="switch_admin">¿Es administrador?</string>
+    <string name="switch_active">Usuario activo</string>
+    <string name="btn_add_photo">Agregar Foto</string>
+    <string name="btn_change_photo">Cambiar Foto</string>
+    <string name="btn_carnet">Generar Carnet PDF</string>
+    <string name="apply">Aplicar</string>
+    <string name="end_date">Fecha fin</string>
+    <string name="start_date">Fecha inicio</string>
+    <string name="clear">Limpiar</string>
 
     <!-- Errores -->
     <string name="error_invalid_email">Ingrese un correo válido</string>

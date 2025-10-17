@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Previsualización del Carnet"
+            android:text="@string/carnet_preview"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -66,7 +66,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="DOCENTE"
+                            android:text="@string/DOCENTE"
                             android:textColor="@color/white"
                             android:textSize="8sp"
                             android:textStyle="bold" />
@@ -80,6 +80,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="15dp"
+                        android:contentDescription="@string/desc_preview"
                         android:scaleType="centerCrop"
                         android:background="@drawable/circular_background" />
 
@@ -102,7 +103,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Nombres: "
+                                android:text="@string/names_carnet_preview"
                                 android:textColor="@color/black"
                                 android:textSize="6.5sp"
                                 android:textStyle="bold" />
@@ -111,7 +112,7 @@
                                 android:id="@+id/tvCarnetNames"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="NOMBRES"
+                                android:text="@string/hint_Nombres"
                                 android:textColor="@color/black"
                                 android:textSize="6.5sp"
                                 android:maxLines="2"
@@ -129,7 +130,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Apellidos: "
+                                android:text="@string/Apellidos_carnet_preview"
                                 android:textColor="@color/black"
                                 android:textSize="6.5sp"
                                 android:textStyle="bold" />
@@ -138,7 +139,7 @@
                                 android:id="@+id/tvCarnetLastnames"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="APELLIDOS"
+                                android:text="@string/hint_Apellidos"
                                 android:textColor="@color/black"
                                 android:textSize="6.5sp"
                                 android:maxLines="2"
@@ -174,7 +175,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="INFORMACIÓN"
+                            android:text="@string/INFORMACION"
                             android:textColor="@color/white"
                             android:textSize="7sp"
                             android:textStyle="bold" />
@@ -190,7 +191,7 @@
                         android:layout_marginTop="25dp"
                         android:background="@color/white"
                         android:padding="2dp"
-                        android:contentDescription="Código QR del profesor" />
+                        android:contentDescription="@string/desc_qr" />
 
                     <!-- Fecha de emisión -->
                     <TextView
@@ -199,7 +200,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:layout_marginTop="40dp"
-                        android:text="Emitido: MM/AAAA"
+                        android:text="@string/Emitido"
                         android:textColor="@color/black"
                         android:textSize="6sp"
                         android:textStyle="bold" />
@@ -229,7 +230,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Información del Profesor"
+                android:text="@string/informacion_profesor"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -239,7 +240,7 @@
                 android:id="@+id/tvTeacherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nombre completo:"
+                android:text="@string/full_name_preview"
                 android:textColor="@color/gray_700"
                 android:textSize="14sp" />
 
@@ -248,7 +249,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Email:"
+                android:text="@string/email_preview"
                 android:textColor="@color/gray_700"
                 android:textSize="14sp" />
 
@@ -257,7 +258,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="ID:"
+                android:text="@string/id_preview"
                 android:textColor="@color/gray_700"
                 android:textSize="14sp" />
 
@@ -271,7 +272,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:text="Generar Carnet PDF"
+        android:text="@string/btn_carnet"
         android:textSize="16sp"
         app:icon="@drawable/ic_picture_as_pdf"
         app:iconGravity="start"
